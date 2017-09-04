@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: etranchi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/31 17:32:27 by etranchi          #+#    #+#             */
-/*   Updated: 2017/08/31 17:33:01 by etranchi         ###   ########.fr       */
+/*   Created: 2017/03/15 04:47:57 by etranchi          #+#    #+#             */
+/*   Updated: 2017/04/18 18:12:00 by etranchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <stdarg.h>
-# include <sys/types.h>
+char		*ft_strdup(const char *s1)
+{
+	char	*pc;
+	size_t	i;
 
-typedef struct s_flags
-{
-	int diez;
-	int minus;
-	int plus;
-	int h;
-	int l;
-	int hh;
-	int ll;
-	int j;
-	int z;
-}			t_flags;
-typedef struct s_env
-{
-	char *fmt;
-	int len;
-	int buff_len;
-	int pre;
-	t_flags *flags;
-}				t_env;
-#endif
+	i = ft_strlen(s1);
+	pc = NULL;
+	if (!(pc = (char *)malloc((i + 1) * sizeof(char))))
+		return (NULL);
+	if (!s1)
+	{
+		pc = NULL;
+		return (pc);
+	}
+	pc[i] = '\0';
+	while (i--)
+		pc[i] = s1[i];
+	return (pc);
+}

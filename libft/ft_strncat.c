@@ -1,40 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_strncat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: etranchi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/31 17:32:27 by etranchi          #+#    #+#             */
-/*   Updated: 2017/08/31 17:33:01 by etranchi         ###   ########.fr       */
+/*   Created: 2017/04/17 13:28:08 by etranchi          #+#    #+#             */
+/*   Updated: 2017/04/20 10:48:12 by etranchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <stdarg.h>
-# include <sys/types.h>
+char			*ft_strncat(char *s1, const char *s2,
+		size_t n)
+{
+	size_t i;
+	size_t destlen;
 
-typedef struct s_flags
-{
-	int diez;
-	int minus;
-	int plus;
-	int h;
-	int l;
-	int hh;
-	int ll;
-	int j;
-	int z;
-}			t_flags;
-typedef struct s_env
-{
-	char *fmt;
-	int len;
-	int buff_len;
-	int pre;
-	t_flags *flags;
-}				t_env;
-#endif
+	i = 0;
+	destlen = ft_strlen(s1);
+	while (s2[i] && i < n)
+	{
+		s1[destlen + i] = s2[i];
+		i++;
+	}
+	s1[destlen + i] = '\0';
+	return (s1);
+}

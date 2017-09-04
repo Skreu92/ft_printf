@@ -1,40 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: etranchi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/31 17:32:27 by etranchi          #+#    #+#             */
-/*   Updated: 2017/08/31 17:33:01 by etranchi         ###   ########.fr       */
+/*   Created: 2017/04/17 12:04:50 by etranchi          #+#    #+#             */
+/*   Updated: 2017/04/19 14:30:51 by etranchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <stdarg.h>
-# include <sys/types.h>
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
+{
+	unsigned int i;
 
-typedef struct s_flags
-{
-	int diez;
-	int minus;
-	int plus;
-	int h;
-	int l;
-	int hh;
-	int ll;
-	int j;
-	int z;
-}			t_flags;
-typedef struct s_env
-{
-	char *fmt;
-	int len;
-	int buff_len;
-	int pre;
-	t_flags *flags;
-}				t_env;
-#endif
+	i = 0;
+	if (s != NULL && (*f) != NULL)
+		while (s[i] != '\0')
+		{
+			(*f)(i, &s[i]);
+			i++;
+		}
+}

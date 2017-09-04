@@ -1,40 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: etranchi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/31 17:32:27 by etranchi          #+#    #+#             */
-/*   Updated: 2017/08/31 17:33:01 by etranchi         ###   ########.fr       */
+/*   Created: 2017/04/17 13:49:45 by etranchi          #+#    #+#             */
+/*   Updated: 2017/04/18 18:13:33 by etranchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <stdarg.h>
-# include <sys/types.h>
+char	*ft_strrchr(const char *s, int c)
+{
+	char	d;
+	char	*str;
+	int		i;
+	int		count;
 
-typedef struct s_flags
-{
-	int diez;
-	int minus;
-	int plus;
-	int h;
-	int l;
-	int hh;
-	int ll;
-	int j;
-	int z;
-}			t_flags;
-typedef struct s_env
-{
-	char *fmt;
-	int len;
-	int buff_len;
-	int pre;
-	t_flags *flags;
-}				t_env;
-#endif
+	count = 0;
+	i = -1;
+	str = (char *)s;
+	d = (char)c;
+	while (str[++i])
+	{
+		if (str[i] == d)
+			count++;
+	}
+	if (d == '\0')
+		return ((char *)(&s[i]));
+	while (str && count > 0)
+	{
+		if (*str == d)
+			count--;
+		if (count == 0)
+			return (str);
+		str++;
+	}
+	return (NULL);
+}

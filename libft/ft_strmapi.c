@@ -1,40 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: etranchi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/31 17:32:27 by etranchi          #+#    #+#             */
-/*   Updated: 2017/08/31 17:33:01 by etranchi         ###   ########.fr       */
+/*   Created: 2017/04/17 12:07:34 by etranchi          #+#    #+#             */
+/*   Updated: 2017/04/19 14:35:03 by etranchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <stdarg.h>
-# include <sys/types.h>
+char			*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+{
+	size_t			len;
+	char			*ctn;
+	unsigned int	i;
 
-typedef struct s_flags
-{
-	int diez;
-	int minus;
-	int plus;
-	int h;
-	int l;
-	int hh;
-	int ll;
-	int j;
-	int z;
-}			t_flags;
-typedef struct s_env
-{
-	char *fmt;
-	int len;
-	int buff_len;
-	int pre;
-	t_flags *flags;
-}				t_env;
-#endif
+	i = 0;
+	if (!s)
+		return (NULL);
+	len = ft_strlen(s);
+	ctn = (char *)malloc((len + 1) * sizeof(char));
+	if (!ctn || (*f) == NULL)
+		return (NULL);
+	ctn[len] = '\0';
+	while (s[i])
+	{
+		ctn[i] = f(i, s[i]);
+		i++;
+	}
+	return (ctn);
+}
