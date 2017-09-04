@@ -11,11 +11,14 @@
 # **************************************************************************** #
 
 
-FLAGS= 
-//-Wall -Werror -Wextra -O0 -g -fsanitize=address
+FLAGS= -Wall -Werror -Wextra -O0 -g -fsanitize=address
 
 
 SRC= ft_printf.c\
+		getter.c\
+		setter.c\
+		is_it.c\
+
 
 NAME = ft_printf
 CC = gcc
