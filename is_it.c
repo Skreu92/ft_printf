@@ -26,19 +26,19 @@ int is_flag(char *str, int i)
 	return (0);
 }
 
-int is_type(char *str, int i)
+int is_type(char c)
 {
-	if(str[i] == 's' || str[i] == 'S')
+	if(c == 's' || c == 'S')
 		return (1);
-	if(str[i] == 'u' || str[i] == 'U')
+	if(c == 'u' || c == 'U')
 		return (1);
-	if(str[i] == 'd' || str[i] == 'D')
+	if(c == 'd' || c == 'D')
 		return (1);
-	if(str[i] == 'x' || str[i] == 'X')
+	if(c == 'x' || c == 'X')
 		return (1);
-	if(str[i] == 'c' || str[i] == 'C')
+	if(c == 'c' || c == 'C')
 		return (1);
-	if(str[i] == 'p'|| str[i] == 'i')
+	if(c == 'p'|| c == 'i')
 		return (1);
 	return (0);
 }

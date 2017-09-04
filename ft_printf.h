@@ -37,6 +37,22 @@ typedef struct s_modifiers
 	int z;
 }				t_modifiers;
 
+typedef struct s_types
+{
+	int s;
+	int S;
+	int u;
+	int U;
+	int d;
+	int D;
+	int x;
+	int X;
+	int c;
+	int C;
+	int p;
+	int i;
+}			t_types;
+
 typedef struct s_env
 {
 	char *fmt;
@@ -45,6 +61,7 @@ typedef struct s_env
 	int pre;
 	t_flags *flags;
 	t_modifiers *modifiers;
+	t_types  *types;
 }				t_env;
 
 int		get_precision(t_env *e, int i);
@@ -52,9 +69,10 @@ int		get_buff_len(t_env *e, int i);
 void	init_env(t_env *e, const char *format);
 int 	is_flag(char *str, int i);
 int 	is_modifier(char *str, int i);
-int 	is_type(char *str, int i);
+int 	is_type(char c);
 int		set_modifiers(t_modifiers *modifiers, char *fmt, int i);
 void 	set_flags(t_flags *flags, char *fmt, int i);
+void 	set_type(t_types *types, char c);
 void 	init_flags_modi(t_flags *flags, t_modifiers *modifiers);
 
 #endif

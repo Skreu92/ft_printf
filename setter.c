@@ -45,3 +45,32 @@ int set_modifiers(t_modifiers *modifiers, char *fmt, int i)
 	else
 		return (i + 1);
 }
+
+void set_type(t_types *types, char c)
+{
+	if (c == 's')
+		types->s = 1;
+	if (c == 'S')
+		types->S = 1;
+	if (c == 'u')
+		types->u = 1;
+	if (c == 'U')
+		types->U = 1;
+	if (c == 'd')
+		types->d = 1;
+	if (c == 'D')
+		types->D = 1;
+	if (c == 'x')
+		types->x = 1;
+	if (c == 'X')
+		types->X = 1;
+	if (c == 'c')
+		types->c = 1;
+	if (c == 'C')
+		types->C = 1;
+	if (c == 'p')
+		types->p = 1;
+	if (c == 'i')
+		types->i = 1;
+	printf("type %c\n", c);
+}

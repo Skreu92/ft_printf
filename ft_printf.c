@@ -50,8 +50,8 @@ int begin(t_env *e, va_list params)
 				i = get_precision(e, i);
 			if(e->fmt[i] && is_modifier(e->fmt, i))
 				i = set_modifiers(e->modifiers, e->fmt, i);
-			if(is_type(e->fmt, i))
-			/*	set_type(e, params);*/
+			if(is_type(e->fmt[i]))
+				set_type(e->types, e->fmt[i]);
 			print_struct(e);
 		}
 		else
@@ -81,6 +81,7 @@ void init_env(t_env *e, const char *format)
 	e->fmt = ft_strdup(format);
 	e->flags = malloc(sizeof(t_flags));
 	e->modifiers = malloc(sizeof(t_modifiers));
+	e->types = malloc(sizeof(t_types));
 	e->buff_len = 0;
 	e->pre = 0;
 	e->len = 0;
@@ -91,6 +92,6 @@ int main()
 	int a = 23;
 
 	printf("printf return %d \n", printf("coucou%-+3.50ddaa\n", a));
-	ft_printf("coucou%-+3.50hd");
+	ft_printf("coucou%#-+3.50hd");
 	return (0);
 }
