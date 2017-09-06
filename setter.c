@@ -46,19 +46,22 @@ int set_modifiers(t_modifiers *modifiers, char *fmt, int i)
 		return (i + 1);
 }
 
-void set_type(t_types *types, char c)
+int set_type(t_env *e, char c, va_list params)
 {
+	int len;
+
+	len = 0;
 	if (c == 's')
-		types->s = 1;
-	if (c == 'S')
-		types->S = 1;
+		len += ft_conv_s(e, params);
+	/*if (c == 'S')
+		types->S = 1;*/
 	if (c == 'u')
-		types->u = 1;
-	if (c == 'U')
-		types->U = 1;
-	if (c == 'd')
-		types->d = 1;
-	if (c == 'D')
+		len += ft_conv_u(e, params);
+	/*if (c == 'U')
+		types->U = 1;*/
+	if (c == 'd' || c == 'i')
+		len += ft_conv_dec(e, params);
+	/*if (c == 'D')
 		types->D = 1;
 	if (c == 'x')
 		types->x = 1;
@@ -69,7 +72,6 @@ void set_type(t_types *types, char c)
 	if (c == 'C')
 		types->C = 1;
 	if (c == 'p')
-		types->p = 1;
-	if (c == 'i')
-		types->i = 1;
+		types->p = 1;*/
+	return (len);
 }

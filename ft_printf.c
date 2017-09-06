@@ -34,30 +34,33 @@ int begin(t_env *e, va_list params)
 {
 	int i;
 	int j;
-
-	i = -1;
-	j = -1;
-	(void)params;
-	while(e->fmt[++i])
+	j = 0;
+	i = 0;
+	while(i < (int)ft_strlen(e->fmt) && e->fmt[i])
 	{
 		init_flags_modi(e->flags, e->modifiers);
 		if(e->fmt[i] == '%')
 		{
-			while(e->fmt[i + 1] && is_flag(e->fmt, ++i))
+			while(e->fmt[++i] && is_flag(e->fmt, i))
 				set_flags(e->flags, e->fmt, i);
 			i = get_buff_len(e, i);
-			if(e->fmt[i++] == '.')
+			if(e->fmt[i] == '.')
 				i = get_precision(e, i);
 			if(e->fmt[i] && is_modifier(e->fmt, i))
 				i = set_modifiers(e->modifiers, e->fmt, i);
 			if(is_type(e->fmt[i]))
-				set_type(e->types, e->fmt[i]);
+			{
+				e->len += set_type(e, e->fmt[i], params);
+			}
 			print_struct(e);
 		}
 		else
+		{
 			write(1, &e->fmt[i], 1);
+		}
+		i++;
 	}
-	return(i);
+	return(e->len);
 }
 
 
@@ -78,6 +81,7 @@ int ft_printf(const char *format, ...)
 
 void init_env(t_env *e, const char *format)
 {
+	
 	e->fmt = ft_strdup(format);
 	e->flags = malloc(sizeof(t_flags));
 	e->modifiers = malloc(sizeof(t_modifiers));
@@ -89,9 +93,9 @@ void init_env(t_env *e, const char *format)
 
 int main()
 {
-	long long a = ;
+	
 
-	printf("printf return %lld \n", a);
-	//ft_printf("coucou%#-+3.50hd", a);
+	printf("printf return %-4u\n",-3);
+	ft_printf("coucou%#-4u\n", -3);
 	return (0);
 }

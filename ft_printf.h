@@ -56,6 +56,7 @@ typedef struct s_types
 typedef struct s_env
 {
 	char *fmt;
+	char *buffer;
 	int len;
 	int buff_len;
 	int pre;
@@ -72,7 +73,17 @@ int 	is_modifier(char *str, int i);
 int 	is_type(char c);
 int		set_modifiers(t_modifiers *modifiers, char *fmt, int i);
 void 	set_flags(t_flags *flags, char *fmt, int i);
-void 	set_type(t_types *types, char c);
+int		set_type(t_env *e, char c, va_list params);
 void 	init_flags_modi(t_flags *flags, t_modifiers *modifiers);
+int ft_conv_s(t_env *e, va_list params);
 
+
+char *ft_lltoa(long long nb);
+char *ft_llutoa(unsigned long long nb);
+int ft_conv_dec(t_env *e, va_list params);
+int ft_conv_u(t_env *e, va_list params);
+void create_buffer(t_env *e, char *str, char c);
+void fill_buffer(char *buffer, int buff_len, int flagminus, char *str);
+char *ft_uitoa(unsigned int nb);
+char *ft_itoa( int nb);
 #endif

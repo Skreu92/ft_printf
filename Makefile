@@ -18,7 +18,10 @@ SRC= ft_printf.c\
 		getter.c\
 		setter.c\
 		is_it.c\
-
+		ft_conv_s.c\
+		ft_lltoa.c\
+		ft_conv_dec.c\
+		ft_conv_u.c\
 
 NAME = ft_printf
 CC = gcc
