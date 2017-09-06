@@ -89,9 +89,9 @@ void init_env(t_env *e, const char *format)
 
 int main()
 {
-	int a = 23;
+	long long a = ;
 
-	printf("printf return %d \n", printf("coucou%-+3.50ddaa\n", a));
-	ft_printf("coucou%#-+3.50hd");
+	printf("printf return %lld \n", a);
+	//ft_printf("coucou%#-+3.50hd", a);
 	return (0);
 }

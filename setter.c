@@ -72,5 +72,4 @@ void set_type(t_types *types, char c)
 		types->p = 1;
 	if (c == 'i')
 		types->i = 1;
-	printf("type %c\n", c);
 }
