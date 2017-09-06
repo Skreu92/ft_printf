@@ -74,8 +74,6 @@ char *ft_uitoa(unsigned int nb)
 
 	if(nb == 4294967295)
 		return (ft_strdup("4294967295"));
-	if(nb > 2)
-		printf("yooo\n");
 	len = ft_intlen(nb);
 	str = malloc(sizeof(char) * (len + 1));
 	str[len] = '\0';

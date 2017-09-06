@@ -14,12 +14,11 @@
 
 int ft_conv_u(t_env *e, va_list params)
 {
-	unsigned int nb;
 	char c;
+	unsigned int nb;
 
 	c = (e->flags->zero) ? '0' : ' ';
-	nb = (unsigned int)va_arg(params, unsigned int);
-	printf("string%s\n", ft_uitoa(nb));
+	nb = va_arg(params, int) + (int)UINT_MAX;
 	create_buffer(e, ft_uitoa(nb), c);
 	fill_buffer(e->buffer, e->buff_len, e->flags->minus, ft_uitoa(nb));
 	ft_putstr(e->buffer);
