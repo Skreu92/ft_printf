@@ -95,7 +95,7 @@ int main()
 {
 	
 
-	printf("printf return %-4u\n",-3);
-	ft_printf("coucou%#-4u\n", -3);
+	printf("printf return %+04d\n",-3);
+	ft_printf("coucou%#+04d", -3);
 	return (0);
 }

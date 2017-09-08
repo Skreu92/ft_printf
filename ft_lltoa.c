@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int ft_intlen(int nb)
+int ft_lllen(long long nb)
 {
 	int i;
 
@@ -22,21 +22,53 @@ int ft_intlen(int nb)
 	return (i);
 }
 
-char *ft_lltoa(long long nb)
+int ft_ulllen(unsigned long long nb)
+{
+	int i;
+
+	i = 1;
+	while (nb /= 10)
+		i++;
+	return (i);
+}
+
+int ft_uintlen(unsigned long long nb)
+{
+	int i;
+
+	i = 1;
+	while (nb /= 10)
+		i++;
+	return (i);
+}
+
+int ft_intlen(unsigned long long nb)
+{
+	int i;
+
+	i = 1;
+	while (nb /= 10)
+		i++;
+	return (i);
+}
+
+char *ft_lltoa(long long n)
 {
 	char *str;
 	int sign;
 	int len;
+	unsigned long long nb;
 
+	nb = (unsigned long long)n;
 	sign = 0;
-	if(nb == -2147483648)
-		return (ft_strdup("-2147483648"));
-	if (nb < 0)
+	if (nb == -9223372036854775808ull)
+		return (ft_strdup("-9223372036854775808"));
+	if (n < 0)
 	{
 		sign = 1;
-		nb = -nb;
+		n = -n;
 	}
-	len = ft_intlen(nb) + sign;
+	len = ft_lllen(nb) + sign;
 	str = malloc(sizeof(char) * (len + 1));
 	str[len] = '\0';
 	while (len--)
@@ -56,7 +88,7 @@ char *ft_llutoa(unsigned long long nb)
 
 	if (nb == 2147483647)
 		return (ft_strdup("-2147483648"));
-	len = ft_intlen(nb);
+	len = ft_ulllen(nb);
 	str = malloc(sizeof(char) * (len + 1));
 	str[len] = '\0';
 	while (len--)
@@ -74,7 +106,7 @@ char *ft_uitoa(unsigned int nb)
 
 	if(nb == 4294967295)
 		return (ft_strdup("4294967295"));
-	len = ft_intlen(nb);
+	len = ft_uintlen(nb);
 	str = malloc(sizeof(char) * (len + 1));
 	str[len] = '\0';
 	while (len--)

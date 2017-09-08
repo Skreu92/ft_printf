@@ -39,7 +39,7 @@ void fill_buffer(char *buffer, int buff_len, int flagminus, char *str)
 	if(flagminus)
 		buffer = ft_strncpy(buffer, str, (int)ft_strlen(str));
 	else
-		buffer = ft_strncpy((buff_len + ft_strlen(str)) + buffer, str, (int)ft_strlen(str));
+		buffer = ft_strncpy((buff_len - ft_strlen(str)) + buffer , str, (int)ft_strlen(str));
 }
 int ft_conv_s(t_env *e, va_list params)
 {
