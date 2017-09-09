@@ -54,6 +54,14 @@ typedef struct s_types
 	int i;
 }			t_types;
 
+typedef struct s_conv
+{
+	char *buffer_nb;
+	char *buffer_str;
+	char empty;
+	char sign;
+}				t_conv;
+
 typedef struct s_env
 {
 	char *fmt;
@@ -83,7 +91,7 @@ char *ft_lltoa(long long nb);
 char *ft_llutoa(unsigned long long nb);
 int ft_conv_dec(t_env *e, va_list params);
 int ft_conv_u(t_env *e, va_list params);
-void create_buffer(t_env *e, char *str, char c);
+void create_buffer(t_conv *cv, t_env *e);
 void fill_buffer(char *buffer, int buff_len, int flagminus, char *str);
 char *ft_uitoa(unsigned int nb);
 char *ft_itoa( int nb);

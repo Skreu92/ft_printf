@@ -16,7 +16,7 @@ char *check_modifiers(t_modifiers *m, va_list params)
 {
 	char *buffer;
 
-	buffer = xft_itoa(va_arg(params, int));
+	buffer = ft_itoa(va_arg(params, int));
 	if(m->l)
 		buffer = ft_lltoa(va_arg(params, long));
 	if(m->ll)
@@ -29,19 +29,31 @@ char *check_modifiers(t_modifiers *m, va_list params)
 		buffer = ft_itoa(va_arg(params, intmax_t));
 	if(m->z)
 		buffer = ft_itoa(va_arg(params, size_t));
-
 	return (buffer);
+}
+
+char	*check_sign(t_conv *cv)
+{
+	if(cv->buffer_nb[0] == '-')
+	{
+		cv->sign = '-';
+		return (cv->buffer_nb + 1);
+	}
+	else
+		cv->sign = '+';
+	return (cv->buffer_nb);
+
 }
 int ft_conv_dec(t_env *e, va_list params)
 {
-	char c;
-	char *buffer;
+	t_conv *cv;
 
-	c = (e->flags->zero) ? '0' : ' ';
-	buffer = check_modifiers(e->modifiers, params);
-	create_buffer(e, buffer, c);
-	printf("aaa%s\n",e->buffer );
-	fill_buffer(e->buffer, e->buff_len, e->flags->minus, buffer);
+	cv = malloc(sizeof(t_conv));
+	cv->empty = (e->flags->zero) ? '0' : ' ';
+	cv->buffer_nb = check_modifiers(e->modifiers, params);
+	cv->buffer_nb = check_sign(cv);
+	create_buffer(cv, e);
+	fill_buffer(e->buffer, e->buff_len, e->flags->minus, cv->buffer_nb);
 	ft_putstr(e->buffer);
 	return (ft_strlen(e->buffer));
 }

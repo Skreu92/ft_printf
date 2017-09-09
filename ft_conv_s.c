@@ -12,25 +12,25 @@
 
 #include "ft_printf.h"
 
-void create_buffer(t_env *e, char *str, char c)
+void create_buffer(t_conv *cv, t_env *e)
 {
-	if(e->buff_len > (int)ft_strlen(str))
+	if(e->buff_len > (int)ft_strlen(cv->buffer_nb))
 	{
 		e->buffer = malloc(sizeof(char) * (e->buff_len + 1));
 		e->buffer[e->buff_len] = '\0';
-		ft_memset(e->buffer, c, e->buff_len);
+		ft_memset(e->buffer, cv->empty, e->buff_len);
 	}
-	else if (e->pre > (int)ft_strlen(str))
+	else if (e->pre > (int)ft_strlen(cv->buffer_nb))
 	{
 		e->buffer = malloc(sizeof(char) * (e->pre + 1));
 		e->buffer[e->pre] = '\0';
-		ft_memset(e->buffer, c, e->pre);
+		ft_memset(e->buffer, cv->empty, e->pre);
 	}
 	else
 	{
-		e->buffer = malloc(sizeof(char) * ((int)ft_strlen(str) + 1));
+		e->buffer = malloc(sizeof(char) * ((int)ft_strlen(cv->buffer_nb) + 1));
 		e->buffer[e->buff_len] = '\0';
-		ft_memset(e->buffer, c, (int)ft_strlen(str));
+		ft_memset(e->buffer, cv->empty, (int)ft_strlen(cv->buffer_nb));
 	}
 }
 
@@ -48,7 +48,6 @@ int ft_conv_s(t_env *e, va_list params)
 
 	c = (e->flags->zero) ? '0' : ' ';
 	str = va_arg(params, char *);
-	create_buffer(e, str, c);
 	fill_buffer(e->buffer, e->buff_len, e->flags->minus, str);
 	ft_putstr(e->buffer);
 	return (ft_strlen(e->buffer));
