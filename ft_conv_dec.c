@@ -16,7 +16,7 @@ char *check_modifiers(t_modifiers *m, va_list params)
 {
 	char *buffer;
 
-	buffer = ft_itoa(va_arg(params, int));
+	buffer = xft_itoa(va_arg(params, int));
 	if(m->l)
 		buffer = ft_lltoa(va_arg(params, long));
 	if(m->ll)
