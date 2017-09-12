@@ -34,6 +34,7 @@ int begin(t_env *e, va_list params)
 {
 	int i;
 	int j;
+
 	j = 0;
 	i = 0;
 	while(i < (int)ft_strlen(e->fmt) && e->fmt[i])
@@ -43,9 +44,9 @@ int begin(t_env *e, va_list params)
 		{
 			while(e->fmt[++i] && is_flag(e->fmt, i))
 				set_flags(e->flags, e->fmt, i);
-			i = get_buff_len(e, i);
+			i = get_buff_len(e, i, &e->buff_len);
 			if(e->fmt[i] == '.')
-				i = get_precision(e, i);
+				i = get_buff_len(e, ++i, &e->pre);
 			if(e->fmt[i] && is_modifier(e->fmt, i))
 				i = set_modifiers(e->modifiers, e->fmt, i);
 			if(is_type(e->fmt[i]))
@@ -94,8 +95,7 @@ void init_env(t_env *e, const char *format)
 int main()
 {
 	
-
-	printf("printf return %+04d\n",-3);
-	ft_printf("coucou%#+04d", -3);
+	printf("printf return %+4.6da\n",3);
+	ft_printf("printf return %+4.6da\n", 3);
 	return (0);
 }

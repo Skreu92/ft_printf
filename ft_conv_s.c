@@ -14,33 +14,28 @@
 
 void create_buffer(t_conv *cv, t_env *e)
 {
-	if(e->buff_len > (int)ft_strlen(cv->buffer_nb))
+	if(e->buff_len > (int)ft_strlen(cv->buffer_nb) && e->buff_len > e->pre)
 	{
-		e->buffer = malloc(sizeof(char) * (e->buff_len + 1));
-		e->buffer[e->buff_len] = '\0';
-		ft_memset(e->buffer, cv->empty, e->buff_len);
+		cv->buffer_str = malloc(sizeof(char) * (e->buff_len + 1));
+		cv->buffer_str[e->buff_len] = '\0';
+		ft_memset(cv->buffer_str, cv->empty, e->buff_len);
 	}
 	else if (e->pre > (int)ft_strlen(cv->buffer_nb))
 	{
-		e->buffer = malloc(sizeof(char) * (e->pre + 1));
-		e->buffer[e->pre] = '\0';
-		ft_memset(e->buffer, cv->empty, e->pre);
+		cv->buffer_str = malloc(sizeof(char) * (e->pre + 2));
+		cv->buffer_str[e->pre + 1] = '\0';
+		cv->buffer_len = e->pre;
+		ft_memset(cv->buffer_str, '0', e->pre + 1);
 	}
 	else
 	{
-		e->buffer = malloc(sizeof(char) * ((int)ft_strlen(cv->buffer_nb) + 1));
-		e->buffer[e->buff_len] = '\0';
-		ft_memset(e->buffer, cv->empty, (int)ft_strlen(cv->buffer_nb));
+		cv->buffer_str = malloc(sizeof(char) * ((int)ft_strlen(cv->buffer_nb) + 1));
+		cv->buffer_str[e->buff_len] = '\0';
+		ft_memset(cv->buffer_str, cv->empty, (int)ft_strlen(cv->buffer_nb));
 	}
 }
 
-void fill_buffer(char *buffer, int buff_len, int flagminus, char *str)
-{
-	if(flagminus)
-		buffer = ft_strncpy(buffer, str, (int)ft_strlen(str));
-	else
-		buffer = ft_strncpy((buff_len - ft_strlen(str)) + buffer , str, (int)ft_strlen(str));
-}
+
 int ft_conv_s(t_env *e, va_list params)
 {
 	char *str;
@@ -48,7 +43,7 @@ int ft_conv_s(t_env *e, va_list params)
 
 	c = (e->flags->zero) ? '0' : ' ';
 	str = va_arg(params, char *);
-	fill_buffer(e->buffer, e->buff_len, e->flags->minus, str);
+	//fill_buffer(e->buffer, e->buff_len, e->flags->minus, str);
 	ft_putstr(e->buffer);
 	return (ft_strlen(e->buffer));
 }

@@ -19,8 +19,8 @@ int ft_conv_u(t_env *e, va_list params)
 
 	c = (e->flags->zero) ? '0' : ' ';
 	nb = va_arg(params, unsigned int);
-	create_buffer(e, ft_uitoa(nb), c);
-	fill_buffer(e->buffer, e->buff_len, e->flags->minus, ft_uitoa(nb));
+	//create_buffer(e, ft_uitoa(nb), c);
+	//fill_buffer(e->buffer, e->buff_len, e->flags->minus, ft_uitoa(nb));
 	ft_putstr(e->buffer);
 	return (ft_strlen(e->buffer));
 }

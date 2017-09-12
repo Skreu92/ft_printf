@@ -14,27 +14,29 @@
 
 int get_precision(t_env *e, int i)
 {
-	char buffer[120];
+	char buff[10];
 	int j;
 
 	j = -1;
-	ft_memset(buffer, ' ', 120);
+	ft_memset(buff, ' ', 3);
 	while(ft_isdigit(e->fmt[i]))
-		buffer[++j] = e->fmt[i++];
-	e->pre = ft_atoi(buffer);
+		buff[++j] = e->fmt[i++];
+	printf("%s\n", buff);
+	e->pre = ft_atoi(buff);
+
 	return (i);
 }
 
-int get_buff_len(t_env *e, int i)
+int get_buff_len(t_env *e, int i, int *len)
 {
-	char buffer[120];
+	char buffer[10];
 	int j;
 
 	j = -1;
-	ft_memset(buffer, ' ', 120);
+	ft_memset(buffer, ' ', 3);
 	while(ft_isdigit(e->fmt[i]))
 		buffer[++j] = e->fmt[i++];
-	e->buff_len = ft_atoi(buffer);
+	*len = ft_atoi(buffer);
 	return (i);
 }
 

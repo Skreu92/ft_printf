@@ -44,6 +44,43 @@ char	*check_sign(t_conv *cv)
 	return (cv->buffer_nb);
 
 }
+
+void f_minus(t_conv *cv, int f_plus)
+{
+	int i;
+	int j;
+
+	j = 0;
+	i = 1;
+	if(f_plus || cv->sign == '-')
+	{
+		cv->buffer_str[0] = cv->sign;
+	}
+	while(cv->buffer_nb[j])
+	{
+		cv->buffer_str[i] = cv->buffer_nb[j];
+		i++;
+		j++;
+	}
+}
+
+void f_fill_buff(t_conv *cv, int f_plus)
+{
+	int i;
+	int j;
+
+	i = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb);
+	j = 0;
+	if(f_plus || cv->sign == '-')
+		cv->buffer_str[ft_strlen(cv->buffer_nb) + 1 ] = cv->sign;
+	while(i < (int)ft_strlen(cv->buffer_str))
+	{
+		cv->buffer_str[i] = cv->buffer_nb[j];
+		i++;
+		j++;
+	}
+}
+
 int ft_conv_dec(t_env *e, va_list params)
 {
 	t_conv *cv;
@@ -51,9 +88,12 @@ int ft_conv_dec(t_env *e, va_list params)
 	cv = malloc(sizeof(t_conv));
 	cv->empty = (e->flags->zero) ? '0' : ' ';
 	cv->buffer_nb = check_modifiers(e->modifiers, params);
-	cv->buffer_nb = check_sign(cv);
 	create_buffer(cv, e);
-	fill_buffer(e->buffer, e->buff_len, e->flags->minus, cv->buffer_nb);
-	ft_putstr(e->buffer);
-	return (ft_strlen(e->buffer));
+	cv->buffer_nb = check_sign(cv);
+	if(e->flags->minus)
+		f_minus(cv, e->flags->plus);
+	else
+		f_fill_buff(cv, e->flags->plus);
+	ft_putstr(cv->buffer_str);
+	return (ft_strlen(cv->buffer_str));
 }

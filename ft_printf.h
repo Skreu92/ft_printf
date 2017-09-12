@@ -75,7 +75,7 @@ typedef struct s_env
 }				t_env;
 
 int		get_precision(t_env *e, int i);
-int		get_buff_len(t_env *e, int i);
+int		get_buff_len(t_env *e, int i, int *len);
 void	init_env(t_env *e, const char *format);
 int 	is_flag(char *str, int i);
 int 	is_modifier(char *str, int i);
@@ -92,7 +92,6 @@ char *ft_llutoa(unsigned long long nb);
 int ft_conv_dec(t_env *e, va_list params);
 int ft_conv_u(t_env *e, va_list params);
 void create_buffer(t_conv *cv, t_env *e);
-void fill_buffer(char *buffer, int buff_len, int flagminus, char *str);
 char *ft_uitoa(unsigned int nb);
 char *ft_itoa( int nb);
 #endif
