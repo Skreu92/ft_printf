@@ -58,6 +58,8 @@ typedef struct s_conv
 {
 	char *buffer_nb;
 	char *buffer_str;
+	int buffer_len;
+	int mode;
 	char empty;
 	char sign;
 }				t_conv;

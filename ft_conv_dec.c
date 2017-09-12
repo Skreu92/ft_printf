@@ -51,10 +51,15 @@ void f_minus(t_conv *cv, int f_plus)
 	int j;
 
 	j = 0;
-	i = 1;
+	i = 0;
 	if(f_plus || cv->sign == '-')
 	{
 		cv->buffer_str[0] = cv->sign;
+	}
+	while(cv->mode == 2 && i < (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb) - 1)
+	{
+		cv->buffer_str[i] = '0';
+		i++;
 	}
 	while(cv->buffer_nb[j])
 	{
@@ -68,11 +73,29 @@ void f_fill_buff(t_conv *cv, int f_plus)
 {
 	int i;
 	int j;
+	int k;
 
 	i = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb);
 	j = 0;
-	if(f_plus || cv->sign == '-')
-		cv->buffer_str[ft_strlen(cv->buffer_nb) + 1 ] = cv->sign;
+	k = 1;
+	if (cv->mode == 1)
+	{
+		cv->buffer_str[i - 1] = (f_plus) ? cv->sign : cv->empty;
+	}
+	else if (cv->mode == 2)
+	{
+		cv->buffer_str[0] = (f_plus) ? cv->sign : cv->empty;
+	}
+	else if(f_plus || cv->sign == '-')
+		cv->buffer_str[(int)ft_strlen(cv->buffer_nb) - 1] = cv->sign;
+	if(cv->mode == 2)
+	{
+		while(k < i)
+		{
+			cv->buffer_str[k] = '0';
+			k++;
+		}
+	}
 	while(i < (int)ft_strlen(cv->buffer_str))
 	{
 		cv->buffer_str[i] = cv->buffer_nb[j];

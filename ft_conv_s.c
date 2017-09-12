@@ -14,18 +14,20 @@
 
 void create_buffer(t_conv *cv, t_env *e)
 {
+	cv->mode = 0;
 	if(e->buff_len > (int)ft_strlen(cv->buffer_nb) && e->buff_len > e->pre)
 	{
 		cv->buffer_str = malloc(sizeof(char) * (e->buff_len + 1));
 		cv->buffer_str[e->buff_len] = '\0';
+		cv->mode = 1;
 		ft_memset(cv->buffer_str, cv->empty, e->buff_len);
 	}
 	else if (e->pre > (int)ft_strlen(cv->buffer_nb))
 	{
 		cv->buffer_str = malloc(sizeof(char) * (e->pre + 2));
 		cv->buffer_str[e->pre + 1] = '\0';
-		cv->buffer_len = e->pre;
-		ft_memset(cv->buffer_str, '0', e->pre + 1);
+		cv->mode = 2;
+		ft_memset(cv->buffer_str, cv->empty, e->pre + 1);
 	}
 	else
 	{
