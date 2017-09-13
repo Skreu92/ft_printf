@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int get_precision(t_env *e, int i)
+int get_precision(t_env *e, int i, int *len)
 {
 	char buff[10];
 	int j;
@@ -21,9 +21,9 @@ int get_precision(t_env *e, int i)
 	ft_memset(buff, ' ', 3);
 	while(ft_isdigit(e->fmt[i]))
 		buff[++j] = e->fmt[i++];
-	printf("%s\n", buff);
-	e->pre = ft_atoi(buff);
-
+	*len = ft_atoi(buff);
+	while(ft_isdigit(e->fmt[i]))
+		i++;
 	return (i);
 }
 

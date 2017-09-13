@@ -76,7 +76,7 @@ typedef struct s_env
 	t_types  *types;
 }				t_env;
 
-int		get_precision(t_env *e, int i);
+int		get_precision(t_env *e, int i, int *len);
 int		get_buff_len(t_env *e, int i, int *len);
 void	init_env(t_env *e, const char *format);
 int 	is_flag(char *str, int i);

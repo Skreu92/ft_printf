@@ -95,7 +95,7 @@ void init_env(t_env *e, const char *format)
 int main()
 {
 	
-	printf("printf return %-.60da\n",3);
-	ft_printf("printf return %-.60da\n", 3);
+	printf("printf return %-61.60da\n",3);
+	ft_printf("printf return %-61.60da\n", 3);
 	return (0);
 }
