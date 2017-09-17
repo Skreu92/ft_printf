@@ -53,7 +53,7 @@ int begin(t_env *e, va_list params)
 			{
 				e->len += set_type(e, e->fmt[i], params);
 			}
-			print_struct(e);
+			//print_struct(e);
 		}
 		else
 		{
@@ -94,8 +94,7 @@ void init_env(t_env *e, const char *format)
 
 int main()
 {
-	
-	printf("printf return %-61.60da\n",3);
-	ft_printf("printf return %-61.60da\n", 3);
+	printf("printf :%x\n", 0xFFFF);
+	ft_printf("ft_printf :%x\n", 0xFFFF);
 	return (0);
 }

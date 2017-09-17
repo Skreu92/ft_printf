@@ -51,23 +51,15 @@ int set_type(t_env *e, char c, va_list params)
 	int len;
 
 	len = 0;
-	if (c == 's')
-		len += ft_conv_s(e, params);
-	/*if (c == 'S')
-		types->S = 1;*/
-	if (c == 'u')
-		len += ft_conv_u(e, params);
-	/*if (c == 'U')
-		types->U = 1;*/
-	if (c == 'd' || c == 'i')
-		len += ft_conv_dec(e, params);
-	/*if (c == 'D')
-		types->D = 1;
-	if (c == 'x')
-		types->x = 1;
-	if (c == 'X')
-		types->X = 1;
-	if (c == 'c')
+	if (c == 's' || c == 'S')
+		len += ft_conv_s(e, params, c);
+	if (c == 'u' || c == 'U')
+		len += ft_conv_u(e, params, c);
+	if (c == 'd' || c == 'i' || c == 'D')
+		len += ft_conv_dec(e, params, c);
+	if (c == 'x' || c == 'X')
+		len += ft_conv_x(e, params, c);
+	/*if (c == 'c')
 		types->c = 1;
 	if (c == 'C')
 		types->C = 1;

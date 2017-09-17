@@ -22,6 +22,8 @@ SRC= ft_printf.c\
 		ft_lltoa.c\
 		ft_conv_dec.c\
 		ft_conv_u.c\
+		ft_conv_x.c\
+		checker.c\
 
 NAME = ft_printf
 CC = gcc

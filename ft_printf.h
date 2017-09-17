@@ -18,6 +18,7 @@
 # include <stdarg.h>
 # include <sys/types.h>
 # include <stdio.h>
+# include <wchar.h>
 
 typedef struct s_flags
 {
@@ -57,6 +58,7 @@ typedef struct s_types
 typedef struct s_conv
 {
 	char *buffer_nb;
+	unsigned int *buffer_wnb;
 	char *buffer_str;
 	int buffer_len;
 	int mode;
@@ -86,14 +88,25 @@ int		set_modifiers(t_modifiers *modifiers, char *fmt, int i);
 void 	set_flags(t_flags *flags, char *fmt, int i);
 int		set_type(t_env *e, char c, va_list params);
 void 	init_flags_modi(t_flags *flags, t_modifiers *modifiers);
-int ft_conv_s(t_env *e, va_list params);
+int ft_conv_s(t_env *e, va_list params, char c);
 
-
+char *ft_lltoa_base(long long nb, char *base);
+char *ft_llutoa_base(unsigned long long nb, char *base);
 char *ft_lltoa(long long nb);
 char *ft_llutoa(unsigned long long nb);
-int ft_conv_dec(t_env *e, va_list params);
-int ft_conv_u(t_env *e, va_list params);
-void create_buffer(t_conv *cv, t_env *e);
+int ft_conv_dec(t_env *e, va_list params, char c);
+int ft_conv_u(t_env *e, va_list params, char c);
+int ft_conv_x(t_env *e, va_list params, char c);
+void create_buffer(t_conv *cv, t_env *e, int nb);
+char *ft_uitoa_base(unsigned int nb, char *base);
 char *ft_uitoa(unsigned int nb);
 char *ft_itoa( int nb);
+void f_fill_buff(t_conv *cv, int f_plus, int pre, int len);
+
+// Check Modifiers
+char *check_d_modifiers(t_modifiers *m, va_list params, char c);
+void check_s_modifiers(t_conv *cv, t_modifiers *m, va_list params, char c);
+char *check_u_modifiers(t_modifiers *m, va_list params, char c);
+char *check_x_modifiers(t_modifiers *m, va_list params, char c);
+
 #endif
