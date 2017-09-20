@@ -77,6 +77,37 @@ char *check_u_modifiers(t_modifiers *m, va_list params, char c)
 	return (buffer);	
 }
 
+char *check_p_modifiers(t_modifiers *m, va_list params)
+{
+	char *buffer;
+	char *tmp;
+
+	tmp = ft_strdup("0x");
+	if(m->l)
+		buffer = ft_llutoa_base(va_arg(params, unsigned long), "0123456789abcdef");
+	else
+		buffer = ft_llutoa_base(va_arg(params, unsigned long long), "0123456789abcdef");
+	buffer = ft_strjoin(tmp, buffer);
+	free(tmp);
+	return (buffer);
+}
+char *check_c_modifiers(t_modifiers *m, va_list params, char c)
+{
+	char *buffer;
+
+	if(c == 'c' && m->l == 0)
+	{
+		buffer = malloc(sizeof(char) * 2);
+		buffer[1] = '\0';
+		buffer[0] = va_arg(params, int);
+	}
+	else
+	{
+		buffer = wchar_handler_ext((wchar_t)va_arg(params, void*));
+	}
+	return (buffer);
+}
+
 void check_s_modifiers(t_conv *cv, t_modifiers *m, va_list params, char c)
 {
 	cv->buffer_nb = NULL;

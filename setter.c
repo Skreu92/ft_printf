@@ -59,11 +59,9 @@ int set_type(t_env *e, char c, va_list params)
 		len += ft_conv_dec(e, params, c);
 	if (c == 'x' || c == 'X')
 		len += ft_conv_x(e, params, c);
-	/*if (c == 'c')
-		types->c = 1;
-	if (c == 'C')
-		types->C = 1;
+	/*if (c == 'c' || c == 'C')
+		len += ft_conv_c(e, params, c);*/	
 	if (c == 'p')
-		types->p = 1;*/
+		len += ft_conv_p(e, params);
 	return (len);
 }

@@ -89,6 +89,8 @@ void 	set_flags(t_flags *flags, char *fmt, int i);
 int		set_type(t_env *e, char c, va_list params);
 void 	init_flags_modi(t_flags *flags, t_modifiers *modifiers);
 int ft_conv_s(t_env *e, va_list params, char c);
+int ft_conv_c(t_env *e, va_list params, char c);
+int ft_conv_p(t_env *e, va_list params);
 
 char *ft_lltoa_base(long long nb, char *base);
 char *ft_llutoa_base(unsigned long long nb, char *base);
@@ -102,11 +104,19 @@ char *ft_uitoa_base(unsigned int nb, char *base);
 char *ft_uitoa(unsigned int nb);
 char *ft_itoa( int nb);
 void f_fill_buff(t_conv *cv, int f_plus, int pre, int len);
+char	*wchar_handler_ext(wchar_t chr);
+
+char	*ft_mask1(wchar_t n);
+char	*ft_mask2(wchar_t n);
+char	*ft_mask3(wchar_t n);
+char	*ft_mask4(wchar_t n);
 
 // Check Modifiers
 char *check_d_modifiers(t_modifiers *m, va_list params, char c);
 void check_s_modifiers(t_conv *cv, t_modifiers *m, va_list params, char c);
 char *check_u_modifiers(t_modifiers *m, va_list params, char c);
 char *check_x_modifiers(t_modifiers *m, va_list params, char c);
+char *check_c_modifiers(t_modifiers *m, va_list params, char c);
+char *check_p_modifiers(t_modifiers *m, va_list params);
 
 #endif

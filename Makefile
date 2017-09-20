@@ -11,8 +11,9 @@
 # **************************************************************************** #
 
 
-FLAGS= -Wall -Werror -Wextra -O0 -g -fsanitize=address
+FLAGS= -Wall -Werror -Wextra 
 
+/*-O0 -g -fsanitize=address*/
 
 SRC= ft_printf.c\
 		getter.c\
@@ -23,25 +24,36 @@ SRC= ft_printf.c\
 		ft_conv_dec.c\
 		ft_conv_u.c\
 		ft_conv_x.c\
+		ft_conv_c.c\
+		ft_conv_p.c\
+		ft_mask.c\
 		checker.c\
+		libft/ft_strlen.c\
+		libft/ft_putchar.c\
+		libft/ft_atoi.c\
+		libft/ft_isdigit.c\
+		libft/ft_memset.c\
+		libft/ft_putstr.c\
+		libft/ft_strcpy.c\
+		libft/ft_strdup.c\
+		libft/ft_strjoin.c\
+		libft/ft_strnew.c\
 
-NAME = ft_printf
+
+NAME = libftprintf.a
 CC = gcc
 OBJ = $(SRC:.c=.o)
 RM = rm -rf
-INC = -I includes/
-FT = -L libft/ -lft
+FT = -L libft/ -lft 
 CG = \033[92m
 CY =  \033[93m
 CE = \033[0m
 
 all: $(NAME)
-
 $(NAME): $(OBJ)
 	@echo "\033[K$(CY)[FT_PRINTF] :$(CE) $(CG)Creating Library$(CE)\033[1A";
-	@make -C libft/ fclean
-	@make -C libft/
-	@$(CC)  $(FLAGS) $(INC) -o $(NAME) $(OBJ) $(FT)
+	@ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
 	@echo "\033[K$(CY)[FT_PRINTF] :$(CE) $(CG)Compiled FT_PRINTF$(CE)";
 
 %.o: %.c
@@ -50,10 +62,12 @@ $(NAME): $(OBJ)
 
 clean:
 	@$(RM) $(OBJ)
+	@make -C libft clean
 	@echo "\033[K$(CY)[FT_PRINTF] :$(CE) $(CG)Cleaning Object files $(CE)";
 
 fclean: clean
 	@$(RM) $(NAME)
+	@make -C libft fclean
 	@echo "\033[K$(CY)[FT_PRINTF] :$(CE) $(CG)Cleaning FT_PRINTF $(CE)";
 
 re: fclean all

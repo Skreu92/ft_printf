@@ -29,6 +29,11 @@ void print_struct(t_env *e)
 	printf("precison %d\n", e->pre);
 	printf("buff_len %d\n",e->buff_len);
 }
+int ft_print_char(char c)
+{
+	write(1, &c, 1);
+	return (1);
+}
 
 int begin(t_env *e, va_list params)
 {
@@ -53,12 +58,9 @@ int begin(t_env *e, va_list params)
 			{
 				e->len += set_type(e, e->fmt[i], params);
 			}
-			//print_struct(e);
 		}
 		else
-		{
-			write(1, &e->fmt[i], 1);
-		}
+			e->len += ft_print_char(e->fmt[i]);
 		i++;
 	}
 	return(e->len);
@@ -70,14 +72,14 @@ int ft_printf(const char *format, ...)
 {
 	t_env *e;
 	va_list params;
+	int len;
 
 	e = malloc(sizeof(t_env));
-
 	init_env(e, format);
 	va_start(params, format);
-	e->len = begin(e, params);
+	len = begin(e, params);
 	va_end(params);
-	return (e->len);
+	return (len);
 }
 
 void init_env(t_env *e, const char *format)
@@ -92,9 +94,10 @@ void init_env(t_env *e, const char *format)
 	e->len = 0;
 }
 
-int main()
+/*int main()
 {
-	printf("printf :%x\n", 0xFFFF);
-	ft_printf("ft_printf :%x\n", 0xFFFF);
+	int a = 0;
+	printf("printf :%p\n", &a);
+	ft_printf("ft_printf :%p\n", &a);
 	return (0);
-}
+}*/

@@ -185,12 +185,11 @@ char *ft_llutoa_base(unsigned long long nb, char *base)
 
 	len = ull_base_len(nb, ft_strlen(base));
 	str = malloc(sizeof(char) * (len + 1));
-	str[len] = '\0';
-	while (nb / ft_strlen(base) > 0)
+	str[len--] = '\0';
+	while (nb / ft_strlen(base) - 1 > 0 && len >= 0)
 	{
-		str[--len] = base[nb % ft_strlen(base)];
-		nb = nb / ft_strlen(base);
+		str[len--] = base[nb % ft_strlen(base)];
+		nb /= ft_strlen(base);
 	}
-	str[len] = base[nb % ft_strlen(base)];
 	return (str);	
 }
