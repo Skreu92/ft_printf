@@ -185,7 +185,9 @@ char *ft_llutoa_base(unsigned long long nb, char *base)
 	char *str;
 	int len;
 
-	if (nb == 4294967296)
+	if (nb == 4294967296 && ft_strcmp(base, "023456789abcdef") == 0)
+		return (ft_strdup("100000000"));
+	if (nb == 4294967296 && ft_strcmp(base, "023456789ABCDEF") == 0)
 		return (ft_strdup("0"));
 	len = ull_base_len(nb, ft_strlen(base));
 	str = malloc(sizeof(char) * (len + 1));

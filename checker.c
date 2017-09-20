@@ -33,12 +33,11 @@ char *check_d_modifiers(t_modifiers *m, va_list params, char c)
 	return (buffer);
 }
 
-char *check_x_modifiers(t_modifiers *m, va_list params, char c, int diez)
+char *check_x_modifiers(t_modifiers *m, va_list params, char c)
 {
 	char *buffer;
 	char *base;
-	char *tmp;
-	
+
 	base = (c == 'x') ? ft_strdup("0123456789abcdef") : ft_strdup("0123456789ABCDEF");
 	if(m->l || c == 'X')
 		buffer = ft_llutoa_base(va_arg(params, unsigned long), base);
@@ -54,11 +53,6 @@ char *check_x_modifiers(t_modifiers *m, va_list params, char c, int diez)
 		buffer = ft_uitoa_base(va_arg(params, size_t), base);
 	else
 		buffer = ft_uitoa_base(va_arg(params, unsigned int), base);
-	if(diez && ft_strcmp(buffer, "0") != 0)
-	{
-		tmp = (c == 'x') ? "0x" : "0X";
-		buffer = ft_strjoin(tmp, buffer);
-	}
 	return (buffer);
 
 }

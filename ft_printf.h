@@ -121,7 +121,7 @@ char	*ft_mask4(wchar_t n);
 char *check_d_modifiers(t_modifiers *m, va_list params, char c);
 void check_s_modifiers(t_conv *cv, t_modifiers *m, va_list params, char c);
 char *check_u_modifiers(t_modifiers *m, va_list params, char c);
-char *check_x_modifiers(t_modifiers *m, va_list params, char c, int diez);
+char *check_x_modifiers(t_modifiers *m, va_list params, char c);
 char *check_c_modifiers(t_modifiers *m, va_list params, char c);
 char *check_p_modifiers(t_modifiers *m, va_list params);
 
