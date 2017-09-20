@@ -55,12 +55,13 @@ int begin(t_env *e, va_list params)
 			if(e->fmt[i] && is_modifier(e->fmt, i))
 				i = set_modifiers(e->modifiers, e->fmt, i);
 			if(is_type(e->fmt[i]))
-			{
 				e->len += set_type(e, e->fmt[i], params);
-			}
+			if(e->fmt[i] == '%')
+				e->len += set_pourcent(e);
 		}
-		else
+		else if (e->fmt[i] != '\0')
 			e->len += ft_print_char(e->fmt[i]);
+			
 		i++;
 	}
 	return(e->len);

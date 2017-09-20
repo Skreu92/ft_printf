@@ -113,7 +113,6 @@ int ft_conv_dec(t_env *e, va_list params, char c)
 	create_buffer(cv, e, 1);
 	cv->buffer_nb = check_sign(cv);
 	f_fill_buff(cv, e->flags->plus, e->pre, e->buff_len);
-	ft_putstr(cv->buffer_str);
-	//check_width(e);
-	return (ft_strlen(cv->buffer_str));
+	ft_putstr(cv->buffer_str);;
+	return (ft_strlen(cv->buffer_str) - 1);
 }

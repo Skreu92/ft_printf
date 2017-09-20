@@ -33,13 +33,14 @@ char *check_d_modifiers(t_modifiers *m, va_list params, char c)
 	return (buffer);
 }
 
-char *check_x_modifiers(t_modifiers *m, va_list params, char c)
+char *check_x_modifiers(t_modifiers *m, va_list params, char c, int diez)
 {
 	char *buffer;
 	char *base;
-
+	char *tmp;
+	
 	base = (c == 'x') ? ft_strdup("0123456789abcdef") : ft_strdup("0123456789ABCDEF");
-	if(m->l)
+	if(m->l || c == 'X')
 		buffer = ft_llutoa_base(va_arg(params, unsigned long), base);
 	else if(m->ll)
 		buffer = ft_llutoa_base(va_arg(params, unsigned long long), base);
@@ -53,6 +54,11 @@ char *check_x_modifiers(t_modifiers *m, va_list params, char c)
 		buffer = ft_uitoa_base(va_arg(params, size_t), base);
 	else
 		buffer = ft_uitoa_base(va_arg(params, unsigned int), base);
+	if(diez && ft_strcmp(buffer, "0") != 0)
+	{
+		tmp = (c == 'x') ? "0x" : "0X";
+		buffer = ft_strjoin(tmp, buffer);
+	}
 	return (buffer);
 
 }
@@ -61,7 +67,7 @@ char *check_u_modifiers(t_modifiers *m, va_list params, char c)
 	char *buffer;
 
 	if(m->l || c == 'U')
-		buffer = ft_llutoa(va_arg(params, unsigned long));
+		buffer = ft_llutoa(va_arg(params, unsigned long long));
 	else if(m->ll)
 		buffer = ft_llutoa(va_arg(params, unsigned long long));
 	else if(m->h)

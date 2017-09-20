@@ -47,7 +47,7 @@ void create_buffer(t_conv *cv, t_env *e, int nb)
 void create_s_buffer(t_conv *cv, t_env *e)
 {
 	cv->mode = 0;
-	if(e->buff_len)
+	if(e->buff_len > e->pre && e->buff_len > (int)ft_strlen(cv->buffer_nb))
 	{
 		cv->mode = 1;
 		cv->buffer_str = malloc(sizeof(char) * (e->buff_len + 1));
@@ -56,7 +56,7 @@ void create_s_buffer(t_conv *cv, t_env *e)
 	}
 	else
 	{
-		cv->buffer_str = malloc(sizeof(char) * (ft_strlen(cv->buffer_nb) + 1));
+		cv->buffer_str = malloc(sizeof(char) * ((int)ft_strlen(cv->buffer_nb) + 1));
 		cv->buffer_str[ft_strlen(cv->buffer_nb)] = '\0';
 		ft_memset(cv->buffer_str, cv->empty, e->pre);
 	}

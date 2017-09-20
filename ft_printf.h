@@ -87,6 +87,8 @@ int 	is_type(char c);
 int		set_modifiers(t_modifiers *modifiers, char *fmt, int i);
 void 	set_flags(t_flags *flags, char *fmt, int i);
 int		set_type(t_env *e, char c, va_list params);
+int set_pourcent(t_env *e);
+
 void 	init_flags_modi(t_flags *flags, t_modifiers *modifiers);
 int ft_conv_s(t_env *e, va_list params, char c);
 int ft_conv_c(t_env *e, va_list params, char c);
@@ -100,10 +102,14 @@ int ft_conv_dec(t_env *e, va_list params, char c);
 int ft_conv_u(t_env *e, va_list params, char c);
 int ft_conv_x(t_env *e, va_list params, char c);
 void create_buffer(t_conv *cv, t_env *e, int nb);
+void create_s_buffer(t_conv *cv, t_env *e);
 char *ft_uitoa_base(unsigned int nb, char *base);
 char *ft_uitoa(unsigned int nb);
 char *ft_itoa( int nb);
 void f_fill_buff(t_conv *cv, int f_plus, int pre, int len);
+void fill_s_buffer(t_conv *cv, int len, int pre);
+void fill_s_minus(t_conv *cv, int pre);
+
 char	*wchar_handler_ext(wchar_t chr);
 
 char	*ft_mask1(wchar_t n);
@@ -115,7 +121,7 @@ char	*ft_mask4(wchar_t n);
 char *check_d_modifiers(t_modifiers *m, va_list params, char c);
 void check_s_modifiers(t_conv *cv, t_modifiers *m, va_list params, char c);
 char *check_u_modifiers(t_modifiers *m, va_list params, char c);
-char *check_x_modifiers(t_modifiers *m, va_list params, char c);
+char *check_x_modifiers(t_modifiers *m, va_list params, char c, int diez);
 char *check_c_modifiers(t_modifiers *m, va_list params, char c);
 char *check_p_modifiers(t_modifiers *m, va_list params);
 
