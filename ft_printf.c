@@ -51,13 +51,17 @@ int begin(t_env *e, va_list params)
 				set_flags(e->flags, e->fmt, i);
 			i = get_buff_len(e, i, &e->buff_len);
 			if(e->fmt[i] == '.')
+			{
 				i = get_buff_len(e, ++i, &e->pre);
+				e->flags->point = 1;
+			}
 			if(e->fmt[i] && is_modifier(e->fmt, i))
 				i = set_modifiers(e->modifiers, e->fmt, i);
 			if(is_type(e->fmt[i]))
 				e->len += set_type(e, e->fmt[i], params);
 			if(e->fmt[i] == '%')
 				e->len += set_pourcent(e);
+			//print_struct(e);
 		}
 		else if (e->fmt[i] != '\0')
 			e->len += ft_print_char(e->fmt[i]);

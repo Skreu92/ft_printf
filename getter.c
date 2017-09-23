@@ -47,6 +47,7 @@ void init_flags_modi(t_flags *flags, t_modifiers *modifiers)
 	flags->plus = 0;
 	flags->space = 0;
 	flags->zero = 0;
+	flags->point = 0;
 	modifiers->h = 0;
 	modifiers->l = 0;
 	modifiers->hh = 0;

@@ -2,6 +2,6 @@ int ft_printf(const char *format, ...);
 
 int main()
 {
-	printf("retour :%d\n", ft_printf("%lx", 4294967296));
+	ft_printf("%5da\n", 42);
 return (0);
 }

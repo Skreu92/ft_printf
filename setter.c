@@ -50,15 +50,19 @@ int set_type(t_env *e, char c, va_list params)
 {
 	if (c == 's' || c == 'S')
 		return (ft_conv_s(e, params, c));
-	if (c == 'u' || c == 'U')
+	else if (c == 'u' || c == 'U')
 		return (ft_conv_u(e, params, c));
-	if (c == 'd' || c == 'i' || c == 'D')
+	else if (c == 'd' || c == 'i' || c == 'D')
 		return (ft_conv_dec(e, params, c));
-	if (c == 'x' || c == 'X')
+	else if (c == 'x' || c == 'X')
 		return (ft_conv_x(e, params, c));
-	/*if (c == 'c' || c == 'C')
-		len += ft_conv_c(e, params, c);*/	
-	if (c == 'p')
+	else if (c == 'c' || c == 'C')
+		return	(ft_conv_c(e, params, c));
+	else if (c == 'o' || c == 'O')
+	{
+		return (ft_conv_o(e, params, c));
+	}
+	else if (c == 'p')
 		return (ft_conv_p(e, params));
 	else
 		return (0);
@@ -77,7 +81,7 @@ int set_pourcent(t_env *e)
 	if(e->flags->minus)
 		fill_s_minus(cv, e->pre);
 	else
-		fill_s_buffer(cv, e->buff_len, e->pre);
+		fill_s_buffer(cv);
 	ft_putstr(cv->buffer_str);
 	return (ft_strlen(cv->buffer_str));
 }

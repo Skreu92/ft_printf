@@ -41,6 +41,8 @@ int is_type(char c)
 		return (1);
 	if(c == 'p'|| c == 'i')
 		return (1);
+	if(c == 'o' || c == 'O')
+		return (1);
 	return (0);
 }
 

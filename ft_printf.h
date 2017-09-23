@@ -26,6 +26,7 @@ typedef struct s_flags
 	int minus;
 	int plus;
 	int space;
+	int point;
 	int zero;
 }			t_flags;
 
@@ -94,6 +95,7 @@ int ft_conv_s(t_env *e, va_list params, char c);
 int ft_conv_c(t_env *e, va_list params, char c);
 int ft_conv_p(t_env *e, va_list params);
 
+char *ft_itoa_base(unsigned int nb, char *base);
 char *ft_lltoa_base(long long nb, char *base);
 char *ft_llutoa_base(unsigned long long nb, char *base);
 char *ft_lltoa(long long nb);
@@ -101,14 +103,18 @@ char *ft_llutoa(unsigned long long nb);
 int ft_conv_dec(t_env *e, va_list params, char c);
 int ft_conv_u(t_env *e, va_list params, char c);
 int ft_conv_x(t_env *e, va_list params, char c);
+int ft_conv_o(t_env *e, va_list params, char c);
+
 void create_buffer(t_conv *cv, t_env *e, int nb);
 void create_s_buffer(t_conv *cv, t_env *e);
 char *ft_uitoa_base(unsigned int nb, char *base);
 char *ft_uitoa(unsigned int nb);
 char *ft_itoa( int nb);
-void f_fill_buff(t_conv *cv, int f_plus, int pre, int len);
-void fill_s_buffer(t_conv *cv, int len, int pre);
+void f_fill_buff(t_conv *cv, int f_plus, int pre, int space);
+void fill_s_buffer(t_conv *cv);
 void fill_s_minus(t_conv *cv, int pre);
+void fill_x_buffer(t_conv *cv, int minus, int diez);
+void create_x_buffer(t_conv *cv, t_env *e);
 
 char	*wchar_handler_ext(wchar_t chr);
 
@@ -122,7 +128,9 @@ char *check_d_modifiers(t_modifiers *m, va_list params, char c);
 void check_s_modifiers(t_conv *cv, t_modifiers *m, va_list params, char c);
 char *check_u_modifiers(t_modifiers *m, va_list params, char c);
 char *check_x_modifiers(t_modifiers *m, va_list params, char c);
-char *check_c_modifiers(t_modifiers *m, va_list params, char c);
+char *check_o_modifiers(t_modifiers *m, va_list params, char c);
+int check_c_modifiers(t_modifiers *m, char c);
 char *check_p_modifiers(t_modifiers *m, va_list params);
+
 
 #endif

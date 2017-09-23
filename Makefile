@@ -26,6 +26,7 @@ SRC= ft_printf.c\
 		ft_conv_x.c\
 		ft_conv_c.c\
 		ft_conv_p.c\
+		ft_conv_o.c\
 		ft_mask.c\
 		checker.c\
 		libft/ft_strlen.c\
