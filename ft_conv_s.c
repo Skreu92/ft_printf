@@ -148,6 +148,5 @@ int ft_conv_s(t_env *e, va_list params, char c)
 	}
 	ft_putstr(cv->buffer_str);
 	len = ft_strlen(cv->buffer_str);
-	free(cv);
 	return (len);
 }

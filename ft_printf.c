@@ -6,7 +6,7 @@
 /*   By: etranchi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/31 17:31:25 by etranchi          #+#    #+#             */
-/*   Updated: 2017/08/31 17:32:20 by etranchi         ###   ########.fr       */
+/*   Updated: 2017/09/25 15:28:25 by etranchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ int begin(t_env *e, va_list params)
 		init_flags_modi(e->flags, e->modifiers);
 		if(e->fmt[i] == '%')
 		{
-			while(e->fmt[++i] && is_flag(e->fmt, i))
+			if(e->fmt[i + 1] == '\0')
+				return (0);
+			while(e->fmt[++i] && is_flag(e->fmt, i) == 1)
 				set_flags(e->flags, e->fmt, i);
 			i = get_buff_len(e, i, &e->buff_len);
 			if(e->fmt[i] == '.')
@@ -55,18 +57,17 @@ int begin(t_env *e, va_list params)
 				i = get_buff_len(e, ++i, &e->pre);
 				e->flags->point = 1;
 			}
-			if(e->fmt[i] && is_modifier(e->fmt, i))
+			if(e->fmt[i] && is_modifier(e->fmt, i) == 1)
 				i = set_modifiers(e->modifiers, e->fmt, i);
-			if(is_type(e->fmt[i]))
-				e->len += set_type(e, e->fmt[i], params);
+			if(is_type(e->fmt[i]) == 1)
+				e->len += set_type(e, e->fmt[i++], params);
 			else if(e->fmt[i] == '%' || e->fmt[i] == 'Z')
-				e->len += set_pourcent(e, e->fmt[i]);
-			//else
-			//	e->len += ft_print_char(e->fmt[i]);		
+				e->len += set_pourcent(e, e->fmt[i++]);
+			else
+				e->len += ft_print_char(e->fmt[i++]);		
 		}
 		else
-			e->len += ft_print_char(e->fmt[i]);
-		i++;		
+			e->len += ft_print_char(e->fmt[i++]);	
 	}
 	return(e->len);
 }
@@ -91,7 +92,6 @@ int ft_printf(const char *format, ...)
 	va_start(params, format);
 	len = begin(e, params);
 	va_end(params);
-	release_env(e);
 	return (len);
 }
 

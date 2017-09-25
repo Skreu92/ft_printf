@@ -6,7 +6,7 @@
 /*   By: etranchi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 16:42:28 by etranchi          #+#    #+#             */
-/*   Updated: 2017/09/06 16:42:29 by etranchi         ###   ########.fr       */
+/*   Updated: 2017/09/25 15:31:46 by etranchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*check_sign(t_conv *cv)
 	if(cv->buffer_nb[0] == '-')
 	{
 		cv->sign = '-';
-		return (cv->buffer_nb + 1);
+		return (ft_strdup(cv->buffer_nb + 1));
 	}
 	else
 		cv->sign = '+';
@@ -194,7 +194,8 @@ int ft_conv_dec(t_env *e, va_list params, char c)
 	t_conv *cv;
 	int len;
 
-	cv = malloc(sizeof(t_conv));
+	if (!(cv = malloc(sizeof(t_conv))))
+		return (-1);
 	cv->empty = (e->flags->zero) ? '0' : ' ';
 	cv->buffer_nb = check_d_modifiers(e->modifiers, params, c);
 	if(e->flags->point == 1 && e->pre == 0 && ft_strcmp("0", cv->buffer_nb) == 0)
@@ -208,6 +209,5 @@ int ft_conv_dec(t_env *e, va_list params, char c)
 		f_fill_buff(cv, e->flags->plus, e->pre, e->flags->space);
 	ft_putstr(cv->buffer_str);
 	len = ft_strlen(cv->buffer_str);
-	free(cv->buffer_str);
 	return (len);
 }

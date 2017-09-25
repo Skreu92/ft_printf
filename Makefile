@@ -6,12 +6,12 @@
 #    By: Etienne <etranchi@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/04 23:54:53 by Etienne           #+#    #+#              #
-#    Updated: 2017/07/04 23:54:55 by Etienne          ###   ########.fr        #
+#    Updated: 2017/09/25 15:37:54 by etranchi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-FLAGS= -Wall -Werror -Wextra 
+FLAGS= -Wall -Werror -Wextra -o2
 
 /*-O0 -g -fsanitize=address */
 

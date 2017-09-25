@@ -22,6 +22,5 @@ int ft_conv_p(t_env *e, va_list params)
 	cv->buffer_nb = check_p_modifiers(e->modifiers, params); 
 	ft_putstr(cv->buffer_nb);
 	len = ft_strlen(cv->buffer_nb);
-	free_cv(cv);
 	return (len);
 }
