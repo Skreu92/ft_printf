@@ -48,27 +48,29 @@ int set_modifiers(t_modifiers *modifiers, char *fmt, int i)
 
 int set_type(t_env *e, char c, va_list params)
 {
+	int len;
+
 	if (c == 's' || c == 'S')
-		return (ft_conv_s(e, params, c));
+		return (len = ft_conv_s(e, params, c));
 	else if (c == 'u' || c == 'U')
-		return (ft_conv_u(e, params, c));
+		return (len = ft_conv_u(e, params, c));
 	else if (c == 'd' || c == 'i' || c == 'D')
-		return (ft_conv_dec(e, params, c));
+		return (len = ft_conv_dec(e, params, c));
 	else if (c == 'x' || c == 'X')
-		return (ft_conv_x(e, params, c));
+		return (len = ft_conv_x(e, params, c));
 	else if (c == 'c' || c == 'C')
-		return	(ft_conv_c(e, params, c));
+		return (len = ft_conv_c(e, params, c));
 	else if (c == 'o' || c == 'O')
 	{
-		return (ft_conv_o(e, params, c));
+		return (len = ft_conv_o(e, params, c));
 	}
 	else if (c == 'p')
-		return (ft_conv_p(e, params));
+		return (len = ft_conv_p(e, params));
 	else
 		return (0);
 }
 
-int set_pourcent(t_env *e)
+int set_pourcent(t_env *e, char c)
 {
 	t_conv *cv;
 
@@ -76,7 +78,7 @@ int set_pourcent(t_env *e)
 	cv->empty = (e->flags->zero) ? '0' : ' ';
 	cv->buffer_nb = malloc(sizeof(char) * 2);
 	cv->buffer_nb[1] = '\0';
-	cv->buffer_nb[0] = '%';
+	cv->buffer_nb[0] = c;
 	create_s_buffer(cv, e);
 	if(e->flags->minus)
 		fill_s_minus(cv, e->pre);

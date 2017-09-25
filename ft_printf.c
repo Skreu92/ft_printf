@@ -59,19 +59,26 @@ int begin(t_env *e, va_list params)
 				i = set_modifiers(e->modifiers, e->fmt, i);
 			if(is_type(e->fmt[i]))
 				e->len += set_type(e, e->fmt[i], params);
-			if(e->fmt[i] == '%')
-				e->len += set_pourcent(e);
-			//print_struct(e);
+			else if(e->fmt[i] == '%' || e->fmt[i] == 'Z')
+				e->len += set_pourcent(e, e->fmt[i]);
+			//else
+			//	e->len += ft_print_char(e->fmt[i]);		
 		}
-		else if (e->fmt[i] != '\0')
+		else
 			e->len += ft_print_char(e->fmt[i]);
-			
-		i++;
+		i++;		
 	}
 	return(e->len);
 }
 
-
+void release_env(t_env *e)
+{
+	free(e->fmt);
+	free(e->flags);
+	free(e->modifiers);
+	free(e->types);
+	free(e);
+}
 
 int ft_printf(const char *format, ...)
 {
@@ -84,7 +91,17 @@ int ft_printf(const char *format, ...)
 	va_start(params, format);
 	len = begin(e, params);
 	va_end(params);
+	release_env(e);
 	return (len);
+}
+
+void free_cv(t_conv *cv)
+{
+	if (cv->buffer_str)
+		free(cv->buffer_str);
+	if (cv->buffer_nb)
+		free(cv->buffer_nb);
+	free(cv);
 }
 
 void init_env(t_env *e, const char *format)

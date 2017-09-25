@@ -16,6 +16,7 @@
 
 # include "libft/libft.h"
 # include <stdarg.h>
+# include <unistd.h>
 # include <sys/types.h>
 # include <stdio.h>
 # include <wchar.h>
@@ -88,7 +89,7 @@ int 	is_type(char c);
 int		set_modifiers(t_modifiers *modifiers, char *fmt, int i);
 void 	set_flags(t_flags *flags, char *fmt, int i);
 int		set_type(t_env *e, char c, va_list params);
-int set_pourcent(t_env *e);
+int 	set_pourcent(t_env *e, char c);
 
 void 	init_flags_modi(t_flags *flags, t_modifiers *modifiers);
 int ft_conv_s(t_env *e, va_list params, char c);
@@ -104,13 +105,15 @@ int ft_conv_dec(t_env *e, va_list params, char c);
 int ft_conv_u(t_env *e, va_list params, char c);
 int ft_conv_x(t_env *e, va_list params, char c);
 int ft_conv_o(t_env *e, va_list params, char c);
+char	*check_sign(t_conv *cv);
 
-void create_buffer(t_conv *cv, t_env *e, int nb);
+void create_d_buffer(t_conv *cv, t_env *e);
 void create_s_buffer(t_conv *cv, t_env *e);
 char *ft_uitoa_base(unsigned int nb, char *base);
 char *ft_uitoa(unsigned int nb);
 char *ft_itoa( int nb);
 void f_fill_buff(t_conv *cv, int f_plus, int pre, int space);
+void fill_d_minus(t_conv *cv, int f_plus, int pre, int f_space);
 void fill_s_buffer(t_conv *cv);
 void fill_s_minus(t_conv *cv, int pre);
 void fill_x_buffer(t_conv *cv, int minus, int diez);
@@ -132,5 +135,6 @@ char *check_o_modifiers(t_modifiers *m, va_list params, char c);
 int check_c_modifiers(t_modifiers *m, char c);
 char *check_p_modifiers(t_modifiers *m, va_list params);
 
+void free_cv(t_conv *cv);
 
 #endif

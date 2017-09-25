@@ -103,6 +103,7 @@ int ft_conv_c(t_env *e, va_list params, char c)
 {
 	t_conv *cv;
 	int arg;
+	int len;
 	
 	cv = malloc(sizeof(t_conv));
 	cv->empty = (e->flags->zero) ? '0' : ' ';
@@ -115,7 +116,13 @@ int ft_conv_c(t_env *e, va_list params, char c)
 		fill_c_buffer(e, cv, arg);
 		if (arg == 0 && ft_strlen(cv->buffer_str) == 0)
 			return (1);
-
 	}
-	return (ft_strlen(cv->buffer_str));
+	else
+	{
+		arg = (wchar_t)va_arg(params, void *);
+		cv->buffer_str = wchar_handler_ext(arg);
+		fill_c_buffer(e, cv, arg);
+	}
+	len = ft_strlen(cv->buffer_str);
+	return (len);
 }

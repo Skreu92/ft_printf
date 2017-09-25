@@ -15,10 +15,13 @@
 int ft_conv_p(t_env *e, va_list params)
 {
 	t_conv *cv;
+	int len;
 
 	cv = malloc(sizeof(t_conv));
 	cv->empty = (e->flags->zero) ? '0' : ' ';
 	cv->buffer_nb = check_p_modifiers(e->modifiers, params); 
 	ft_putstr(cv->buffer_nb);
-	return (ft_strlen(cv->buffer_nb));
+	len = ft_strlen(cv->buffer_nb);
+	free_cv(cv);
+	return (len);
 }

@@ -52,21 +52,19 @@ int ft_intlen(unsigned long long nb)
 	return (i);
 }
 
-char *ft_lltoa(long long n)
+char *ft_lltoa(long long nb)
 {
 	char *str;
 	int sign;
 	int len;
-	unsigned long long nb;
 
-	nb = (unsigned long long)n;
 	sign = 0;
-	if (nb == -9223372036854775808ull)
+	if ((unsigned long long)nb == -9223372036854775808ull)
 		return (ft_strdup("-9223372036854775808"));
-	if (n < 0)
+	if ((long long)nb < 0 && nb != 2147483648)
 	{
 		sign = 1;
-		n = -n;
+		nb = -nb;
 	}
 	len = ft_lllen(nb) + sign;
 	str = malloc(sizeof(char) * (len + 1));
@@ -76,7 +74,7 @@ char *ft_lltoa(long long n)
 		str[len] = nb % 10 + '0';
 		nb = nb / 10;
 	}
-	if(sign)
+	if(sign == 1)
 		str[0] = '-';
 	return (str);
 }

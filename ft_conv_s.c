@@ -128,12 +128,11 @@ void fill_s_buffer(t_conv *cv)
 int ft_conv_s(t_env *e, va_list params, char c)
 {
 	t_conv *cv;
+	int len;
 
 	cv = malloc(sizeof(t_conv));
 	cv->empty = ' ';
 	check_s_modifiers(cv, e->modifiers, params, c);
-	if (!cv->buffer_nb)
-		cv->buffer_nb = NULL;
 	if(!e->modifiers->l)
 	{
 		create_s_buffer(cv, e);
@@ -148,5 +147,7 @@ int ft_conv_s(t_env *e, va_list params, char c)
 		printf("ici %d\n", (int)cv->buffer_wnb);
 	}
 	ft_putstr(cv->buffer_str);
-	return (ft_strlen(cv->buffer_str));
+	len = ft_strlen(cv->buffer_str);
+	free(cv);
+	return (len);
 }

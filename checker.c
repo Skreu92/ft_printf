@@ -17,8 +17,8 @@ char *check_d_modifiers(t_modifiers *m, va_list params, char c)
 	char *buffer;
 	int tmp;
 
-	if(m->l || c == 'D')
-		buffer = ft_lltoa(va_arg(params, long long));
+	if(m->l == 1 || c == 'D')
+		buffer = ft_lltoa(va_arg(params, long));
 	else if(m->ll)
 		buffer = ft_lltoa(va_arg(params, long long));
 	else if(m->hh)
@@ -31,13 +31,9 @@ char *check_d_modifiers(t_modifiers *m, va_list params, char c)
 	else if(m->h)
 	{
 		if(!(tmp = (short)va_arg(params, int)))
-		{
 				buffer = ft_strdup("0");
-		}
 		else if(ft_strcmp((buffer = ft_itoa(tmp)), "32768") == 0)
-		{
 			buffer = ft_strdup("-32768");
-		}	
 	}
 	else if(m->j)
 		 buffer = ft_lltoa(va_arg(params, intmax_t));
@@ -68,6 +64,7 @@ char *check_x_modifiers(t_modifiers *m, va_list params, char c)
 		buffer = ft_uitoa_base(va_arg(params, size_t), base);
 	else
 		buffer = ft_llutoa_base(va_arg(params, unsigned int), base);
+	free(base);
 	return (buffer);
 }
 
@@ -91,6 +88,7 @@ char *check_o_modifiers(t_modifiers *m, va_list params, char c)
 		buffer = ft_uitoa_base(va_arg(params, size_t), base);
 	else
 		buffer = ft_uitoa_base(va_arg(params, unsigned int), base);
+	free(base);
 	return (buffer);
 
 }
@@ -107,9 +105,9 @@ char *check_u_modifiers(t_modifiers *m, va_list params, char c)
 	else if(m->hh)
 		buffer = ft_uitoa((unsigned short)va_arg(params, unsigned int));
 	else if(m->j)
-		buffer = ft_uitoa(va_arg(params, uintmax_t));
+		buffer = ft_llutoa(va_arg(params, uintmax_t));
 	else if(m->z)
-		buffer = ft_uitoa(va_arg(params, size_t));
+		buffer = ft_llutoa(va_arg(params, size_t));
 	else
 		buffer = ft_uitoa(va_arg(params, unsigned int));
 	return (buffer);	

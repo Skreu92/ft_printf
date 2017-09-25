@@ -102,6 +102,7 @@ void fill_o_buffer(t_conv *cv, int minus, int pre ,int diez)
 int ft_conv_o(t_env *e, va_list params, char c)
 {
 	t_conv *cv;
+	int len;
 
 	cv = malloc(sizeof(t_conv));
 	cv->empty = (e->flags->zero) ? '0' : ' ';
@@ -116,5 +117,6 @@ int ft_conv_o(t_env *e, va_list params, char c)
 		fill_o_buffer(cv, e->flags->minus, e->pre, e->flags->diez);
 	}
 	ft_putstr(cv->buffer_str);
-	return ((int)ft_strlen(cv->buffer_str));
+	len = ft_strlen(cv->buffer_str);
+	return (len);
 }

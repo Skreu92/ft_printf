@@ -1,7 +1,7 @@
-int ft_printf(const char *format, ...);
-
+	
+int ft_printf(const char * format, ...);
 int main()
 {
-	ft_printf("%5da\n", 42);
+	printf("\nretour %d\n" , ft_printf("%C",L"♞"));
 return (0);
 }
