@@ -12,39 +12,6 @@
 
 #include "ft_printf.h"
 
-void fill_x_buffer(t_conv *cv, int minus, int diez)
-{
-	int i;
-	int j;
-
-	if(minus == 1)
-	{
-		i = 0;
-		j = (diez) ? 1 : -1;
-		while(cv->buffer_nb[i] && cv->buffer_str[++j])
-		{
-			cv->buffer_str[j] = cv->buffer_nb[i];
-			i++;
-		}
-		if(!cv->buffer_nb[i])
-			j++;
-		while(cv->buffer_str[j])
-			cv->buffer_str[j++] = ' ';
-	}
-	else
-	{
-		i = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb);
-		j = -1;
-		while(i < (int)ft_strlen(cv->buffer_str) && cv->buffer_nb[++j])
-		{
-			cv->buffer_str[i] = cv->buffer_nb[j]; 
-			i++;
-		}
-		while(cv->buffer_str[i])
-			cv->buffer_str[i++] = cv->empty;
-
-	}
-}
 
 void create_x_buffer(t_conv *cv, t_env *e)
 {
@@ -61,9 +28,9 @@ void create_x_buffer(t_conv *cv, t_env *e)
 	else if(e->pre > e->buff_len && e->pre > len)
 	{
 		cv->mode = 2;
-		cv->buffer_str = malloc(sizeof(char) * (e->pre + 2));
-		cv->buffer_str[e->pre + 1] = '\0';
-		ft_memset(cv->buffer_str, '0', e->pre + 1);
+		cv->buffer_str = malloc(sizeof(char) * (e->pre + 1));
+		cv->buffer_str[e->pre] = '\0';
+		ft_memset(cv->buffer_str, '0', e->pre);
 	}
 	else
 	{
@@ -103,6 +70,86 @@ void diez(t_env *e, t_conv *cv, char c)
 
 }
 
+void fill_x_buffer(t_conv *cv, int diez, char c)
+{
+	int i;
+	int j;
+	char *tmp;
+
+	i = -1;
+	j = -1;
+	tmp = (c == 'x') ? ft_strdup("0x") : ft_strdup("0X");
+	if(cv->mode == 1)
+	{
+		j = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb);
+		if(diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0 && cv->empty == ' ')
+		{
+			cv->buffer_str[j - 1] = tmp[1];
+			cv->buffer_str[j - 2] = tmp[0];
+		}
+		else if (diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0 && cv->empty == '0')
+		{
+			cv->buffer_str[1] = tmp[1];
+			cv->buffer_str[0] = tmp[0];
+		}
+		while(cv->buffer_nb[++i])
+			cv->buffer_str[j++] = cv->buffer_nb[i];
+	}
+	if(cv->mode == 2)
+	{
+		j = ft_strlen(cv->buffer_str) - ft_strlen(cv->buffer_nb);
+		while(cv->buffer_nb[++i])
+			cv->buffer_str[j++] = cv->buffer_nb[i];
+		if (diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0)
+			cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
+	}
+	if( cv->mode == 0)
+	{
+		while(cv->buffer_nb[++i] != '\0')
+			cv->buffer_str[i] = cv->buffer_nb[i];
+		if(diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0)
+			cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
+	}
+}
+
+void fill_x_minus_buffer(t_conv *cv, int diez, char c)
+{
+	int i;
+	int j;
+	char *tmp;
+
+	i = -1;
+	j = -1;
+	tmp = (c == 'x') ? ft_strdup("0x") : ft_strdup("0X");
+	if(cv->mode == 1)
+	{
+		j = 0;
+		if(diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0)
+		{
+			cv->buffer_str[j++] = tmp[0];
+			cv->buffer_str[j++] = tmp[1];
+		}
+		while(cv->buffer_nb[++i])
+			cv->buffer_str[j++] = cv->buffer_nb[i];
+		while(cv->buffer_str[j])
+			cv->buffer_str[j++] = ' ';
+	}
+	if(cv->mode == 2)
+	{
+		j = 0;
+		while(cv->buffer_nb[++i])
+			cv->buffer_str[j++] = cv->buffer_nb[i];
+		if (diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0)
+			cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
+	}
+	if( cv->mode == 0)
+	{
+		while(cv->buffer_nb[++i] != '\0')
+			cv->buffer_str[i] = cv->buffer_nb[i];
+		if(diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0)
+			cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
+	}
+}
 int ft_conv_x(t_env *e, va_list params, char c)
 {
 	t_conv *cv;
@@ -115,9 +162,10 @@ int ft_conv_x(t_env *e, va_list params, char c)
 	create_x_buffer(cv, e);
 	if(cv->buffer_nb != NULL)
 	{
-		fill_x_buffer(cv, e->flags->minus, e->flags->diez);
-		if(e->flags->diez && ft_strcmp(cv->buffer_nb, "0") != 0 )
-			diez(e, cv, c);
+		if(e->flags->minus == 1)
+			fill_x_minus_buffer(cv, e->flags->diez, c);
+		else
+			fill_x_buffer(cv, e->flags->diez, c);	
 	}
 	ft_putstr(cv->buffer_str);
 	return ((int)ft_strlen(cv->buffer_str));

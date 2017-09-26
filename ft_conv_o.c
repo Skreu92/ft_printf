@@ -12,28 +12,12 @@
 
 #include "ft_printf.h"
 
-void diez_o(t_env *e, t_conv *cv)
+void diez_o(t_conv *cv)
 {
 	char *tmp;
 
 	tmp = ft_strdup("0");
-	if(ft_strlen(cv->buffer_str) > ft_strlen(cv->buffer_nb) && e->flags->minus)
-	{
-		cv->buffer_str[0] = tmp[0];
-	}
-	else if(ft_strlen(cv->buffer_str) > ft_strlen(cv->buffer_nb) && !e->flags->minus)
-	{
-		if(e->flags->zero)
-		{
-			cv->buffer_str[0] = tmp[0];
-		}
-		else
-		{
-			cv->buffer_str[ft_strlen(cv->buffer_str) - ft_strlen(cv->buffer_nb) - 1] = tmp[0];
-		}
-	}
-	else if(ft_strlen(cv->buffer_nb) == ft_strlen(cv->buffer_str))
-		cv->buffer_str = ft_strjoin(tmp, cv->buffer_nb);
+	cv->buffer_nb = ft_strjoin(tmp, cv->buffer_nb);
 }
 
 void create_o_buffer(t_conv *cv, t_env *e)
@@ -65,38 +49,126 @@ void create_o_buffer(t_conv *cv, t_env *e)
 	}
 }
 
-void fill_o_buffer(t_conv *cv, int minus, int pre ,int diez)
+void fill_o_minus(t_conv *cv, t_flags *flags, int pre)
 {
 	int i;
 	int j;
+   
+   	i = 0;
+	j = -1;
+	if(cv->mode == 0)
+	{
 
-	if(minus && cv->mode != 2)
+	}
+	if(cv->mode == 1)
+	{
+		if(cv->sign == '-' && flags->plus == 0 && cv->empty != '0')
+			cv->buffer_str[i++] = cv->sign;
+		else if ((flags->plus == 1 && cv->empty == '0'))
+			cv->buffer_str[i++] = cv->sign;
+		else if (flags->plus == 1)
+			cv->buffer_str[i++] = cv->sign;
+		else if ((cv->empty == '0' && cv->sign == '-'))
+			cv->buffer_str[i++] = cv->sign;
+		else if ((cv->empty == '0' && cv->sign == '+' && pre > 0) || ft_strcmp("0", cv->buffer_nb) == 0)
+			cv->buffer_str[i++] = ' ';
+		if(pre > (int)ft_strlen(cv->buffer_nb))
+		{	
+			if(cv->sign == '-' && flags->plus == 0 && cv->empty != '0')
+				cv->buffer_str[i++] = cv->sign;
+			while(i < (pre - (int)ft_strlen(cv->buffer_nb)))
+				cv->buffer_str[i++] = '0';
+		}
+		j = -1;
+		while(cv->buffer_nb[++j])
+			cv->buffer_str[i++] = cv->buffer_nb[j];
+		while(cv->buffer_str[i])
+			cv->buffer_str[i++] = ' ';
+	}
+	if(cv->mode == 2)
+	{
+		i = pre - (int)ft_strlen(cv->buffer_nb);
+		if(cv->sign == '-' && !flags->plus && cv->empty != '0')
+			cv->buffer_str[i - 1] = cv->sign;
+		else if ((flags->plus == 1 && cv->empty == '0') || (cv->empty == '0' && cv->sign == '-'))
+			cv->buffer_str[0] = cv->sign;
+		j = -1;
+		while(cv->buffer_nb[++j])
+			cv->buffer_str[i++] = cv->buffer_nb[j];
+		if (pre == (int)ft_strlen(cv->buffer_str) && cv->sign == '-')
+			cv->buffer_str = ft_strjoin("-",cv->buffer_str); 
+	}
+}
+
+void fill_o_buffer(t_conv *cv, int f_plus, int pre, int f_space)
+{
+	int i;
+	int j;
+	int k;
+
+	j = -1;
+	k = 1;
+	i = 0;
+	(void)f_space;
+	if (cv->mode == 0)
+	{
+		if(cv->sign == '-')
+		{
+			cv->buffer_str[0] = cv->sign;
+			i++;
+		}
+		while(cv->buffer_nb[++j])
+			cv->buffer_str[i++] = cv->buffer_nb[j];
+		cv->buffer_str[i] = '\0';
+	}
+	if(cv->mode == 2)
 	{
 		i = 0;
-		j = (diez) ? 0 : -1;
-		while(++j < pre - (int)ft_strlen(cv->buffer_nb) && pre > 0)
-			cv->buffer_str[j] = '0';
-		while(cv->buffer_nb[i] && cv->buffer_str[j])
+		if(cv->sign == '-' && !f_plus && cv->empty != '0')
+			cv->buffer_str[i++] = cv->sign;
+		else if ((f_plus == 1 && cv->empty == '0') || (cv->empty == '0' && cv->sign == '-'))
+			cv->buffer_str[i++] = cv->sign;
+		else if(cv->sign == '-')
 		{
-			cv->buffer_str[j++] = cv->buffer_nb[i];
+			cv->buffer_str = ft_strjoin("-", cv->buffer_str);
 			i++;
 		}
-		while(cv->buffer_str[j])
-			cv->buffer_str[j++] = ' ';
-	}
-	else
-	{
-		i = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb);
+		if(pre > 0)
+			while((pre - cv->buffer_len) > 0 && ++j < (pre - (int)ft_strlen(cv->buffer_nb)))
+				cv->buffer_str[i++] = '0';
 		j = -1;
-		while(i < (int)ft_strlen(cv->buffer_str) && cv->buffer_nb[++j])
-		{
-			cv->buffer_str[i] = cv->buffer_nb[j]; 
-			i++;
-		}
-		while(cv->buffer_str[i])
-			cv->buffer_str[i++] = cv->empty;
-
+		while(cv->buffer_nb[++j])
+			cv->buffer_str[i++] = cv->buffer_nb[j];
+		cv->buffer_str[i] = '\0';
+		if (pre == (int)ft_strlen(cv->buffer_str) && cv->sign == '-')
+			cv->buffer_str = ft_strjoin("-",cv->buffer_str); 
 	}
+	if(cv->mode == 1)
+	{
+		i = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb) - 1;
+		if(cv->sign == '-' && f_plus == 0 && cv->empty != '0')
+			cv->buffer_str[i] = cv->sign;
+		else if ((f_plus == 1 && cv->empty == '0'))
+			cv->buffer_str[0] = cv->sign;
+		else if (f_plus == 1)
+			cv->buffer_str[i - 1] = cv->sign;
+		else if ((cv->empty == '0' && cv->sign == '-'))
+			cv->buffer_str[0] = cv->sign;
+		else if ((cv->empty == '0' && cv->sign == '+' && pre > 0) || ft_strcmp("0", cv->buffer_nb) == 0)
+			cv->buffer_str[0] = ' ';
+		if(pre > (int)ft_strlen(cv->buffer_nb))
+		{	
+			i = (int)ft_strlen(cv->buffer_str) - pre;
+			if(cv->sign == '-' && f_plus == 0 && cv->empty != '0')
+				cv->buffer_str[i - 1] = cv->sign;
+			while((pre - cv->buffer_len) > 0 && (pre - ft_strlen(cv->buffer_str)) > 0 && i < ((int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb)))
+				cv->buffer_str[i++] = '0';
+			i--;
+		}
+		j = -1;
+		while(cv->buffer_nb[++j])
+			cv->buffer_str[++i] = cv->buffer_nb[j];
+	}	
 }
 
 int ft_conv_o(t_env *e, va_list params, char c)
@@ -107,14 +179,17 @@ int ft_conv_o(t_env *e, va_list params, char c)
 	cv = malloc(sizeof(t_conv));
 	cv->empty = (e->flags->zero) ? '0' : ' ';
 	cv->buffer_nb = check_o_modifiers(e->modifiers, params, c);
-	if((e->flags->point == 1 && e->pre == 0) || cv->buffer_nb == NULL)
+	if((e->flags->point == 1 && e->pre == 0 && ft_strcmp("0",cv->buffer_nb) == 0 )|| cv->buffer_nb == NULL)
 		cv->buffer_nb = ft_strdup("");
 	create_o_buffer(cv, e);
 	if(cv->buffer_nb != NULL)
 	{
 		if(e->flags->diez && ft_strcmp(cv->buffer_nb, "0") != 0 )
-			diez_o(e, cv);
-		fill_o_buffer(cv, e->flags->minus, e->pre, e->flags->diez);
+			diez_o(cv);
+		if (e->flags->minus == 1)
+			fill_o_minus(cv, e->flags, e->pre);
+		else
+			fill_o_buffer(cv, e->flags->plus, e->pre, e->flags->space);
 	}
 	ft_putstr(cv->buffer_str);
 	len = ft_strlen(cv->buffer_str);

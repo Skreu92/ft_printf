@@ -85,7 +85,7 @@ int set_pourcent(t_env *e, char c)
 	if(e->flags->minus)
 		fill_s_minus(cv, e->pre);
 	else
-		fill_s_buffer(cv);
+		fill_s_buffer(cv, 0);
 	ft_putstr(cv->buffer_str);
 	return (ft_strlen(cv->buffer_str));
 }

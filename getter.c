@@ -29,14 +29,17 @@ int get_precision(t_env *e, int i, int *len)
 
 int get_buff_len(t_env *e, int i, int *len)
 {
-	char buffer[10];
+	char *buffer;
 	int j;
 
 	j = -1;
-	ft_memset(buffer, ' ', 3);
+	buffer = malloc(sizeof(char) * 4);
+	buffer[3] = '\0';
 	while(ft_isdigit(e->fmt[i]))
 		buffer[++j] = e->fmt[i++];
+	buffer[++j] = '\0';
 	*len = ft_atoi(buffer);
+	free(buffer);
 	return (i);
 }
 

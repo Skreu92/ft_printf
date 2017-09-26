@@ -68,8 +68,8 @@ void f_fill_buff(t_conv *cv, int f_plus, int pre, int space)
 	{
 		if(cv->sign == '-' || f_plus == 1)
 		{
-			cv->buffer_str[0] = cv->sign;
-			i++;
+			cv->buffer_str[i++] = cv->sign;
+
 		}
 		else if (space == 1)
 		{
@@ -114,8 +114,12 @@ void f_fill_buff(t_conv *cv, int f_plus, int pre, int space)
 			cv->buffer_str[0] = cv->sign;
 		else if ((cv->empty == '0' && cv->sign == '+' && pre > 0) || ft_strcmp("0", cv->buffer_nb) == 0)
 			cv->buffer_str[0] = ' ';
-		if(pre > 0)
-		{	while((pre - cv->buffer_len) > 0 && (pre - ft_strlen(cv->buffer_str)) > 0 && ++j < (pre - cv->buffer_len))
+		if(pre > (int)ft_strlen(cv->buffer_nb))
+		{	
+			i = (int)ft_strlen(cv->buffer_str) - pre;
+			if(cv->sign == '-' && f_plus == 0 && cv->empty != '0')
+				cv->buffer_str[i - 1] = cv->sign;
+			while((pre - cv->buffer_len) > 0 && (pre - ft_strlen(cv->buffer_str)) > 0 && ++j < (pre - cv->buffer_len))
 				cv->buffer_str[i++] = '0';
 			i--;
 		}
@@ -170,12 +174,10 @@ void fill_d_minus(t_conv *cv, int f_plus, int pre, int f_space)
 	i = -1;
 	j = -1;
 	(void)f_space;
-	if (cv->mode == 1)
-	{
 		if(cv->sign == '-' || f_plus == 1)
 			cv->buffer_str[++i] = cv->sign;
 		if(pre > 0)
-		{	while((pre - cv->buffer_len) > 0 && ++j < (pre - cv->buffer_len))
+		{	while((pre - cv->buffer_len)  > 0 && ++j < (pre - cv->buffer_len))
 				cv->buffer_str[++i] = '0';
 		}
 		j = -1;
@@ -183,12 +185,8 @@ void fill_d_minus(t_conv *cv, int f_plus, int pre, int f_space)
 			cv->buffer_str[++i] = cv->buffer_nb[j];
 		while(cv->buffer_str[++i])
 			cv->buffer_str[i] = ' ';
-	}
-	if (cv->mode == 2)
-	{
-
-	}
 }
+
 int ft_conv_dec(t_env *e, va_list params, char c)
 {
 	t_conv *cv;
@@ -209,5 +207,6 @@ int ft_conv_dec(t_env *e, va_list params, char c)
 		f_fill_buff(cv, e->flags->plus, e->pre, e->flags->space);
 	ft_putstr(cv->buffer_str);
 	len = ft_strlen(cv->buffer_str);
+	free_cv(cv);
 	return (len);
 }

@@ -76,7 +76,7 @@ void fill_c_buffer(t_env *e, t_conv *cv, int nb)
 	int i;
 
 	i = -1;
-	if(!e->flags->minus)
+	if(e->flags->minus == 0)
 	{
 		while(++i < ((int)ft_strlen(cv->buffer_str) - 1))
 			write(1, &cv->buffer_str[i], 1);
@@ -105,14 +105,15 @@ int ft_conv_c(t_env *e, va_list params, char c)
 	int arg;
 	int len;
 	
+	len = 0;
 	cv = malloc(sizeof(t_conv));
 	cv->empty = (e->flags->zero) ? '0' : ' ';
 	cv->buffer_len = 0;
 	cv->buffer_len = check_c_modifiers(e->modifiers, c);
-	create_c_buffer(cv, e);
 	if(c == 'c' && e->modifiers->l == 0)
 	{
-		arg = va_arg(params, int);
+		arg = va_arg(params, unsigned int);
+		create_c_buffer(cv, e);
 		fill_c_buffer(e, cv, arg);
 		if (arg == 0 && ft_strlen(cv->buffer_str) == 0)
 			return (1);
@@ -120,9 +121,15 @@ int ft_conv_c(t_env *e, va_list params, char c)
 	else
 	{
 		arg = (wchar_t)va_arg(params, void *);
-		cv->buffer_str = wchar_handler_ext(arg);
-		fill_c_buffer(e, cv, arg);
+		if(arg == 0)
+		{
+			len++;
+			cv->buffer_str = ft_strdup("");
+		}
+		else
+			cv->buffer_str = wchar_handler_ext(arg);
+		ft_putstr(cv->buffer_str);
 	}
-	len = ft_strlen(cv->buffer_str);
+	len += ft_strlen(cv->buffer_str);
 	return (len);
 }

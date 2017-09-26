@@ -20,6 +20,7 @@
 # include <sys/types.h>
 # include <stdio.h>
 # include <wchar.h>
+# include <stdlib.h>
 
 typedef struct s_flags
 {
@@ -60,7 +61,7 @@ typedef struct s_types
 typedef struct s_conv
 {
 	char *buffer_nb;
-	unsigned int *buffer_wnb;
+	wchar_t *buffer_wnb;
 	char *buffer_str;
 	int buffer_len;
 	int mode;
@@ -96,6 +97,7 @@ int ft_conv_s(t_env *e, va_list params, char c);
 int ft_conv_c(t_env *e, va_list params, char c);
 int ft_conv_p(t_env *e, va_list params);
 
+char *ft_lutoa_base(unsigned long n, char *base);
 char *ft_itoa_base(unsigned int nb, char *base);
 char *ft_lltoa_base(long long nb, char *base);
 char *ft_llutoa_base(unsigned long long nb, char *base);
@@ -114,9 +116,11 @@ char *ft_uitoa(unsigned int nb);
 char *ft_itoa( int nb);
 void f_fill_buff(t_conv *cv, int f_plus, int pre, int space);
 void fill_d_minus(t_conv *cv, int f_plus, int pre, int f_space);
-void fill_s_buffer(t_conv *cv);
+void fill_s_buffer(t_conv *cv, int pre);
 void fill_s_minus(t_conv *cv, int pre);
-void fill_x_buffer(t_conv *cv, int minus, int diez);
+void fill_x_buffer(t_conv *cv, int diez, char c);
+void fill_o_minus(t_conv *cv, t_flags *flags, int pre);
+void fill_o_buffer(t_conv *cv, int f_plus, int pre, int f_space);
 void create_x_buffer(t_conv *cv, t_env *e);
 
 char	*wchar_handler_ext(wchar_t chr);

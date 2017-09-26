@@ -100,8 +100,6 @@ char *ft_uitoa(unsigned int nb)
 	char *str;
 	int len;
 
-	if(nb == 4294967295)
-		return (ft_strdup("4294967295"));
 	len = ft_uintlen(nb);
 	str = malloc(sizeof(char) * (len + 1));
 	str[len] = '\0';
@@ -205,6 +203,26 @@ int ull_base_len(unsigned long long nb, unsigned int base)
 		i++;
 	return (i);
 }
+
+char *ft_lutoa_base(unsigned long n, char *base)
+{
+	char *str;
+	int len;
+	unsigned long long nb;
+
+	nb = (unsigned long long)n;
+	len = ull_base_len(nb, ft_strlen(base));
+	str = malloc(sizeof(char) * (len + 1));
+	str[len--] = '\0';
+	while (nb / (unsigned long long)ft_strlen(base) > 0)
+	{
+		str[len--] = base[nb % ft_strlen(base)];
+		nb /= ft_strlen(base);
+	}
+	str[len] = base[nb % ft_strlen(base)];
+	return (str);	
+}
+
 
 char *ft_llutoa_base(unsigned long long nb, char *base)
 {

@@ -45,7 +45,7 @@ NAME = libftprintf.a
 CC = gcc
 OBJ = $(SRC:.c=.o)
 RM = rm -rf
-FT = -L libft/ -lft 
+FT = -L libft/ 
 CG = \033[92m
 CY =  \033[93m
 CE = \033[0m
