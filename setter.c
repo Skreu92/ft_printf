@@ -75,7 +75,7 @@ int set_type(t_env *e, char c, va_list params)
 int set_pourcent(t_env *e, char c)
 {
 	t_conv *cv;
-
+	int len;
 	cv = malloc(sizeof(t_conv));
 	cv->empty = (e->flags->zero) ? '0' : ' ';
 	cv->buffer_nb = malloc(sizeof(char) * 2);
@@ -86,6 +86,10 @@ int set_pourcent(t_env *e, char c)
 		fill_s_minus(cv, e->pre);
 	else
 		fill_s_buffer(cv, 0);
+	free(cv->buffer_nb);
 	ft_putstr(cv->buffer_str);
-	return (ft_strlen(cv->buffer_str));
+	len =  ft_strlen(cv->buffer_str);
+	free(cv->buffer_str);
+	free(cv);
+	return (len);
 }

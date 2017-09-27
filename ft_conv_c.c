@@ -102,7 +102,7 @@ void print_char(char *str, int len)
 int ft_conv_c(t_env *e, va_list params, char c)
 {
 	t_conv *cv;
-	int arg;
+	unsigned int arg;
 	int len;
 	
 	len = 0;
@@ -112,7 +112,7 @@ int ft_conv_c(t_env *e, va_list params, char c)
 	cv->buffer_len = check_c_modifiers(e->modifiers, c);
 	if(c == 'c' && e->modifiers->l == 0)
 	{
-		arg = va_arg(params, unsigned int);
+		arg = va_arg(params, int);
 		create_c_buffer(cv, e);
 		fill_c_buffer(e, cv, arg);
 		if (arg == 0 && ft_strlen(cv->buffer_str) == 0)
@@ -120,16 +120,21 @@ int ft_conv_c(t_env *e, va_list params, char c)
 	}
 	else
 	{
-		arg = (wchar_t)va_arg(params, void *);
+		arg = va_arg(params, unsigned int);
 		if(arg == 0)
 		{
 			len++;
-			cv->buffer_str = ft_strdup("");
+			cv->buffer_str = NULL;
 		}
 		else
-			cv->buffer_str = wchar_handler_ext(arg);
-		ft_putstr(cv->buffer_str);
+			len = ft_wlen(arg);
+		create_c_buffer(cv, e);
+		fill_c_buffer(e, cv, arg);
+
 	}
+
 	len += ft_strlen(cv->buffer_str);
+	free(cv->buffer_str);
+	free(cv);
 	return (len);
 }

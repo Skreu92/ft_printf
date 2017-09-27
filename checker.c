@@ -139,7 +139,6 @@ void check_s_modifiers(t_conv *cv, t_modifiers *m, va_list params, char c)
 	if(m->l || c == 'S')
 	{
 		cv->buffer_wnb = (wchar_t *)va_arg(params, unsigned int*);
-
 	}
 	else
 	{

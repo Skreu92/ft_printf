@@ -81,6 +81,14 @@ typedef struct s_env
 	t_types  *types;
 }				t_env;
 
+typedef struct	s_octect
+{
+	unsigned int	u;
+	unsigned int	d;
+	unsigned int	t;
+	unsigned int	q;
+}				t_octet;
+
 int		get_precision(t_env *e, int i, int *len);
 int		get_buff_len(t_env *e, int i, int *len);
 void	init_env(t_env *e, const char *format);
@@ -122,9 +130,12 @@ void fill_x_buffer(t_conv *cv, int diez, char c);
 void fill_o_minus(t_conv *cv, t_flags *flags, int pre);
 void fill_o_buffer(t_conv *cv, int f_plus, int pre, int f_space);
 void create_x_buffer(t_conv *cv, t_env *e);
+char		*ft_strjoin_free(char **s1, char **s2, int bool_s1, int bool_s2);
 
 char	*wchar_handler_ext(wchar_t chr);
-
+void		ft_putwchar(unsigned int w);
+int	ft_size_bin(unsigned int value);
+int			ft_wlen(unsigned int w);
 char	*ft_mask1(wchar_t n);
 char	*ft_mask2(wchar_t n);
 char	*ft_mask3(wchar_t n);

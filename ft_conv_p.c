@@ -16,12 +16,14 @@ void fill_p_buffer(t_conv *cv)
 {
 	int i;
 	int j;
-
+	char *tmp;
+	char *tmp1;
 	i = -1;
 	j = -1;
+	tmp = ft_strdup("0x");
 	if(cv->mode == 1)
 	{
-		cv->buffer_nb = ft_strjoin("0x", cv->buffer_nb);
+		cv->buffer_nb = ft_strjoin(tmp, cv->buffer_nb);
 		j = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb);
 		while(cv->buffer_nb[++i])
 			cv->buffer_str[j++] = cv->buffer_nb[i];
@@ -31,26 +33,32 @@ void fill_p_buffer(t_conv *cv)
 		j = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb);
 		while(cv->buffer_nb[++i])
 			cv->buffer_str[j++] = cv->buffer_nb[i];
-		cv->buffer_str = ft_strjoin("0x", cv->buffer_str);
+		cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
 	}
 	if( cv->mode == 0)
 	{
 		while(cv->buffer_nb[++i] != '\0')
 			cv->buffer_str[i] = cv->buffer_nb[i];
-		cv->buffer_str = ft_strjoin("0x", cv->buffer_str);
+		tmp1 = cv->buffer_str;
+		cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
+		free(tmp1);
 	}
+	free(tmp);
 }
 
 void fill_p_minus_buffer(t_conv *cv)
 {
 	int i;
 	int j;
+	char *tmp;
+	char *tmp1;
 
 	i = -1;
 	j = -1;
+	tmp = ft_strdup("0x");
 	if(cv->mode == 1)
 	{
-		cv->buffer_nb = ft_strjoin("0x", cv->buffer_nb);
+		cv->buffer_nb = ft_strjoin(tmp, cv->buffer_nb);
 		j = 0;
 		while(cv->buffer_nb[++i])
 			cv->buffer_str[j++] = cv->buffer_nb[i];
@@ -60,14 +68,17 @@ void fill_p_minus_buffer(t_conv *cv)
 		j = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb);
 		while(cv->buffer_nb[++i])
 			cv->buffer_str[j++] = cv->buffer_nb[i];
-		cv->buffer_str = ft_strjoin("0x", cv->buffer_str);
+		cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
 	}
 	if( cv->mode == 0)
 	{
 		while(cv->buffer_nb[++i] != '\0')
 			cv->buffer_str[i] = cv->buffer_nb[i];
-		cv->buffer_str = ft_strjoin("0x", cv->buffer_str);
+		tmp1 = cv->buffer_str;
+		cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
+		free(tmp1);
 	}
+	free(tmp);
 }
 
 int ft_conv_p(t_env *e, va_list params)
@@ -87,5 +98,8 @@ int ft_conv_p(t_env *e, va_list params)
 		fill_p_buffer(cv);
 	ft_putstr(cv->buffer_str);
 	len = ft_strlen(cv->buffer_str);
+	free(cv->buffer_str);
+	free(cv->buffer_nb);
+	free(cv);
 	return (len);
 }

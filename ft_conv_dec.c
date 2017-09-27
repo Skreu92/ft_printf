@@ -15,7 +15,7 @@
 char	*check_sign(t_conv *cv)
 {
 	int i;
-
+	char *tmp;
 	i = 0;
 	while((cv->buffer_nb[i] >= '0' && cv->buffer_nb[i] <= '9') || cv->buffer_nb[i] == '-' || cv->buffer_nb[i] == '+')
 		i++;
@@ -23,7 +23,10 @@ char	*check_sign(t_conv *cv)
 	if(cv->buffer_nb[0] == '-')
 	{
 		cv->sign = '-';
-		return (ft_strdup(cv->buffer_nb + 1));
+		tmp = cv->buffer_nb;
+		cv->buffer_nb = ft_strdup(cv->buffer_nb + 1);
+		free(tmp);
+		return (cv->buffer_nb);
 	}
 	else
 		cv->sign = '+';
@@ -60,10 +63,12 @@ void f_fill_buff(t_conv *cv, int f_plus, int pre, int space)
 	int i;
 	int j;
 	int k;
-
+	char *tmp;
+	char *tmp1;
 	j = -1;
 	k = 1;
 	i = 0;
+
 	if (cv->mode == 0)
 	{
 		if(cv->sign == '-' || f_plus == 1)
@@ -73,7 +78,11 @@ void f_fill_buff(t_conv *cv, int f_plus, int pre, int space)
 		}
 		else if (space == 1)
 		{
-			cv->buffer_str = ft_strjoin(ft_strdup(" "),cv->buffer_str);
+			tmp = cv->buffer_str;
+			tmp1 = ft_strdup(" ");
+			cv->buffer_str = ft_strjoin(tmp1, cv->buffer_str);
+			free(tmp);
+			free(tmp1);
 			i++;
 		}
 		while(cv->buffer_nb[++j])
@@ -191,13 +200,18 @@ int ft_conv_dec(t_env *e, va_list params, char c)
 {
 	t_conv *cv;
 	int len;
+	char *tmp;
 
 	if (!(cv = malloc(sizeof(t_conv))))
 		return (-1);
 	cv->empty = (e->flags->zero) ? '0' : ' ';
 	cv->buffer_nb = check_d_modifiers(e->modifiers, params, c);
 	if(e->flags->point == 1 && e->pre == 0 && ft_strcmp("0", cv->buffer_nb) == 0)
+	{
+		tmp = cv->buffer_nb;
 		cv->buffer_nb = ft_strdup("");
+		free(tmp);
+	}	
 	cv->buffer_nb = check_sign(cv);
 	cv->buffer_len = (int)ft_strlen(cv->buffer_nb);
 	create_d_buffer(cv, e);
@@ -207,6 +221,8 @@ int ft_conv_dec(t_env *e, va_list params, char c)
 		f_fill_buff(cv, e->flags->plus, e->pre, e->flags->space);
 	ft_putstr(cv->buffer_str);
 	len = ft_strlen(cv->buffer_str);
-	free_cv(cv);
+	free(cv->buffer_str);
+	free(cv->buffer_nb);
+	free(cv);
 	return (len);
 }

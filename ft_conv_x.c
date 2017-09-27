@@ -75,6 +75,7 @@ void fill_x_buffer(t_conv *cv, int diez, char c)
 	int i;
 	int j;
 	char *tmp;
+	char *tmp1;
 
 	i = -1;
 	j = -1;
@@ -101,15 +102,24 @@ void fill_x_buffer(t_conv *cv, int diez, char c)
 		while(cv->buffer_nb[++i])
 			cv->buffer_str[j++] = cv->buffer_nb[i];
 		if (diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0)
+		{
+			tmp1 = cv->buffer_str;
 			cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
+			free(tmp1);
+		}
 	}
 	if( cv->mode == 0)
 	{
 		while(cv->buffer_nb[++i] != '\0')
 			cv->buffer_str[i] = cv->buffer_nb[i];
 		if(diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0)
+		{
+			tmp1 = cv->buffer_str;
 			cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
+			free(tmp1);
+		}
 	}
+	free(tmp);
 }
 
 void fill_x_minus_buffer(t_conv *cv, int diez, char c)
@@ -117,6 +127,7 @@ void fill_x_minus_buffer(t_conv *cv, int diez, char c)
 	int i;
 	int j;
 	char *tmp;
+	char *tmp1;
 
 	i = -1;
 	j = -1;
@@ -140,19 +151,29 @@ void fill_x_minus_buffer(t_conv *cv, int diez, char c)
 		while(cv->buffer_nb[++i])
 			cv->buffer_str[j++] = cv->buffer_nb[i];
 		if (diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0)
+		{
+			tmp1 = cv->buffer_str;
 			cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
+			free(tmp1);
+		}
 	}
 	if( cv->mode == 0)
 	{
 		while(cv->buffer_nb[++i] != '\0')
 			cv->buffer_str[i] = cv->buffer_nb[i];
 		if(diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0)
+		{
+			tmp1 = cv->buffer_str;
 			cv->buffer_str = ft_strjoin(tmp, cv->buffer_str);
+			free(tmp1);
+		}
 	}
+	free(tmp);
 }
 int ft_conv_x(t_env *e, va_list params, char c)
 {
 	t_conv *cv;
+	int len;
 
 	cv = malloc(sizeof(t_conv));
 	cv->empty = (e->flags->zero) ? '0' : ' ';
@@ -168,5 +189,9 @@ int ft_conv_x(t_env *e, va_list params, char c)
 			fill_x_buffer(cv, e->flags->diez, c);	
 	}
 	ft_putstr(cv->buffer_str);
-	return ((int)ft_strlen(cv->buffer_str));
+	len = (int)ft_strlen(cv->buffer_str);
+	free(cv->buffer_str);
+	free(cv->buffer_nb);
+	free(cv);
+	return (len);
 }

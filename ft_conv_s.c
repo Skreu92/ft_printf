@@ -12,26 +12,40 @@
 
 #include "ft_printf.h"
 
+int			ft_wlen(unsigned int w)
+{
+	int i;
+	int sb;
 
-static void		wide_to_char(wchar_t **tmp, char **s1, char **s2, int i)
+	i = 1;
+	sb = ft_size_bin(w);
+	while (sb - 8 >= 0)
+	{
+		sb -= 8;
+		i++;
+	}
+	return (i);
+}
+
+void		wide_to_char(wchar_t **tmp, char **s1, char **s2, int i)
 {
 	while ((*tmp) && (*tmp)[++i])
 	{
 		*s1 = ft_memset(ft_strnew(5), '\0', 5);
-		if ((*tmp)[i] <= 0x7F)
+		if ((*tmp)[i] && (*tmp)[i] <= 0x7F)
 			(*s1)[0] = (*tmp)[i];
-		else if ((*tmp)[i] <= 0x7FF)
+		else if ((*tmp)[i] && (*tmp)[i] <= 0x7FF)
 		{
 			(*s1)[0] = (((*tmp)[i] >> 6) + 0xC0);
 			(*s1)[1] = (((*tmp)[i] & 0x3F) + 0x80);
 		}
-		else if ((*tmp)[i] <= 0xFFFF)
+		else if ((*tmp)[i] && (*tmp)[i] <= 0xFFFF)
 		{
 			(*s1)[0] = (((*tmp)[i] >> 12) + 0xE0);
 			(*s1)[1] = ((((*tmp)[i] >> 6) & 0x3F) + 0x80);
 			(*s1)[2] = (((*tmp)[i] & 0x3F) + 0x80);
 		}
-		else if ((*tmp)[i] <= 0x10FFFF)
+		else if ((*tmp)[i] && (*tmp)[i] <= 0x10FFFF)
 		{
 			(*s1)[0] = (((*tmp)[i] >> 18) + 0xF0);
 			(*s1)[1] = ((((*tmp)[i] >> 12) & 0x3F) + 0x80);
@@ -39,9 +53,10 @@ static void		wide_to_char(wchar_t **tmp, char **s1, char **s2, int i)
 			(*s1)[3] = (((*tmp)[i] & 0x3F) + 0x80);
 		}
 		*s2 = ft_strjoin(*s2, *s1);
+		*s1 = NULL;
+		free(*s1);
+
 	}
-	if(i == 0)
-		*s2 = ft_strdup("");
 }
 
 void create_s_buffer(t_conv *cv, t_env *e)
@@ -136,42 +151,68 @@ void			wstring_range_handler(int range, char **str, int minus)
 	if (n > 0)
 	{
 		tmp = ft_memset(ft_strnew(n), ' ', n);
-		(*str) = (minus == 1) ? ft_strjoin(*str, tmp): ft_strjoin(tmp, *str);
+		(*str) = (minus == 1) ? ft_strjoin_free(str, &tmp, 1, 1): ft_strjoin_free(&tmp, str, 1, 1);
 	}
+}
+
+int			putws(t_env *e, unsigned int *buff, int len)
+{
+	if (MB_CUR_MAX > 1)
+	{
+		e->pre = (e->pre == 0) ? 320 : e->pre;
+		while (*buff && len < e->pre)
+		{
+			ft_putwchar(*buff);
+			len += ft_wlen(*buff);
+			buff++;
+		}
+	}
+	else
+		return (0);
+	return (len);
 }
 
 int ft_conv_s(t_env *e, va_list params, char c)
 {
 	t_conv *cv;
 	int len;
-
+	int nul;
+	nul = 0;
 	cv = malloc(sizeof(t_conv));
 	cv->empty = (e->flags->zero) ? '0' : ' ';
 	len = 0;
 	check_s_modifiers(cv, e->modifiers, params, c);
 	if(cv->buffer_nb == NULL && (e->pre > 0 || e->buff_len > 0))
 		cv->buffer_nb = ft_strdup("");
-	else if (cv->buffer_nb == NULL && e->pre == 0)
+	else if (cv->buffer_nb == NULL && e->pre == 0 && (c == 's' && e->modifiers->l == 0))
+	{
 		cv->buffer_nb = ft_strdup("(null)");
+		nul++;
+	}
 	if(e->modifiers->l == 0 && c != 'S')
 	{
 		create_s_buffer(cv, e);
-		if(e->flags->minus)
+		if (e->flags->minus)
 			fill_s_minus(cv, e->pre);
 		else
 			fill_s_buffer(cv, e->pre);
+		if(cv->buffer_nb && ft_strcmp("(null)", cv->buffer_nb) == 0 && nul == 1)
+			free(cv->buffer_nb);
+		ft_putstr(cv->buffer_str);
+		len += ft_strlen(cv->buffer_str);
+		free(cv->buffer_str);
 	}
-	else if (!(MB_CUR_MAX < 1))
+	else 
 	{
-		if (cv->buffer_wnb == NULL || cv->buffer_wnb == 0)
-			cv->buffer_str = ft_strdup("(null)");
-		else if (cv->buffer_wnb )
+		if (cv->buffer_wnb == 0 || cv->buffer_wnb == NULL)
 		{
-			wide_to_char(&cv->buffer_wnb, &cv->buffer_nb, &cv->buffer_str, -1);
-			wstring_range_handler(e->pre, &cv->buffer_str, e->flags->minus);
+			cv->buffer_str = ft_strdup("(null)");
+		}
+		else if (cv->buffer_wnb != NULL )
+		{
+			len = putws(e, (unsigned int *)cv->buffer_wnb, 0);
 		}
 	}
-	ft_putstr(cv->buffer_str);
-	len += ft_strlen(cv->buffer_str);
+	free(cv);
 	return (len);
 }

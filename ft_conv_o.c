@@ -15,9 +15,13 @@
 void diez_o(t_conv *cv)
 {
 	char *tmp;
+	char *tmp1;
 
 	tmp = ft_strdup("0");
+	tmp1 = cv->buffer_nb;
 	cv->buffer_nb = ft_strjoin(tmp, cv->buffer_nb);
+	free(tmp);
+	free(tmp1);
 }
 
 void create_o_buffer(t_conv *cv, t_env *e)
@@ -193,5 +197,8 @@ int ft_conv_o(t_env *e, va_list params, char c)
 	}
 	ft_putstr(cv->buffer_str);
 	len = ft_strlen(cv->buffer_str);
+	free(cv->buffer_str);
+	free(cv->buffer_nb);
+	free(cv);
 	return (len);
 }

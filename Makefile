@@ -27,6 +27,7 @@ SRC= ft_printf.c\
 		ft_conv_c.c\
 		ft_conv_p.c\
 		ft_conv_o.c\
+		ft_putwchar.c\
 		checker.c\
 		libft/ft_strlen.c\
 		libft/ft_putchar.c\
@@ -39,6 +40,8 @@ SRC= ft_printf.c\
 		libft/ft_strjoin.c\
 		libft/ft_strnew.c\
 		libft/ft_strcmp.c\
+		libft/ft_memdel.c\
+		libft/ft_memalloc.c\
 
 
 NAME = libftprintf.a

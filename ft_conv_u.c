@@ -50,7 +50,7 @@ void fill_u(t_conv *cv, int pre, int minus)
 int ft_conv_u(t_env *e, va_list params, char c)
 {
 	t_conv *cv;
-
+	int len;
 	cv = malloc(sizeof(t_conv));
 	cv->empty = (e->flags->zero) ? '0' : ' ';
 	cv->buffer_nb = check_u_modifiers(e->modifiers, params, c);
@@ -58,5 +58,9 @@ int ft_conv_u(t_env *e, va_list params, char c)
 	create_d_buffer(cv, e);
 	fill_u(cv, e->pre, e->flags->minus);
 	ft_putstr(cv->buffer_str);
-	return (ft_strlen(cv->buffer_str));
+	len = ft_strlen(cv->buffer_str);
+	free(cv->buffer_nb);
+	free(cv->buffer_str);
+	free(cv);
+	return (len);
 }
