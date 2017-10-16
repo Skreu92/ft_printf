@@ -20,24 +20,25 @@ int		ft_print_char(char c)
 
 int		init_check(t_env *e, va_list params, int *i)
 {
-	if (e->fmt[i + 1] == '\0')
+	if (e->fmt[*i + 1] == '\0')
 		return (0);
-	while (e->fmt[++i] && is_flag(e->fmt, i) == 1)
-		set_flags(e->flags, e->fmt, i);
-	i = get_buff_len(e, i, &e->buff_len);
-	if (e->fmt[i] == '.')
+	while (e->fmt[++(*i)] && is_flag(e->fmt, *i) == 1)
+		set_flags(e->flags, e->fmt, *i);
+	*i = get_buff_len(e, *i, &e->buff_len);
+	if (e->fmt[*i] == '.')
 	{
-		i = get_buff_len(e, ++i, &e->pre);
+		*i = get_buff_len(e, ++(*i), &e->pre);
 		e->flags->point = 1;
 	}
-	if (e->fmt[i] && is_modifier(e->fmt, i) == 1)
-		i = set_modifiers(e->modifiers, e->fmt, i);
-	if (is_type(e->fmt[i]) == 1)
-		e->len += set_type(e, e->fmt[i++], params);
-	else if (e->fmt[i])
-		e->len += set_pourcent(e, e->fmt[i++]);
+	if (e->fmt[*i] && is_modifier(e->fmt, *i) == 1)
+		*i = set_modifiers(e->modifiers, e->fmt, *i);
+	if (is_type(e->fmt[*i]) == 1)
+		e->len += set_type(e, e->fmt[(*i)++], params);
+	else if (e->fmt[*i])
+		e->len += set_pourcent(e, e->fmt[(*i)++]);
 	else
-		e->len += ft_print_char(e->fmt[i++]);
+		e->len += ft_print_char(e->fmt[(*i)++]);
+	return (1);
 }
 
 int		begin(t_env *e, va_list params)
