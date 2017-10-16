@@ -76,17 +76,17 @@ void	diez(t_env *e, t_conv *cv, char c)
 		cv->buffer_str = ft_strjoin(tmp, cv->buffer_nb);
 }
 
-void	fill_modex_d(t_conv *cv, int diez, char *tmp)
+void	fill_modex_d(t_conv *cv, int diez, int pre, char *tmp)
 {
 	int i;
 	int j;
 
 	i = -1;
-	j = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb);
+	j = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb) - 1;
 	if (diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0 && cv->empty == ' ')
 	{
-		cv->buffer_str[j - 1] = tmp[1];
-		cv->buffer_str[j - 2] = tmp[0];
+		cv->buffer_str[j] = tmp[1];
+		cv->buffer_str[j - 1] = tmp[0];
 	}
 	else if (diez == 1 && ft_strcmp("0", cv->buffer_nb) != 0
 		&& cv->empty == '0')
@@ -94,8 +94,16 @@ void	fill_modex_d(t_conv *cv, int diez, char *tmp)
 		cv->buffer_str[1] = tmp[1];
 		cv->buffer_str[0] = tmp[0];
 	}
+	if(pre > (int)ft_strlen(cv->buffer_nb))
+	{
+		j -= (pre - (int)ft_strlen(cv->buffer_nb));
+		while ((pre - cv->buffer_len) > 0 && ++i < pre - cv->buffer_len)
+			cv->buffer_str[++j] = '0';
+		j -= 2;
+	}
+	i = -1;
 	while (cv->buffer_nb[++i])
-		cv->buffer_str[j++] = cv->buffer_nb[i];
+		cv->buffer_str[++j] = cv->buffer_nb[i];
 }
 
 void	fill_modex_t(t_conv *cv, int diez, char *tmp)
@@ -116,7 +124,7 @@ void	fill_modex_t(t_conv *cv, int diez, char *tmp)
 	}
 }
 
-void	fill_x_buffer(t_conv *cv, int diez, char c)
+void	fill_x_buffer(t_conv *cv, int diez, int pre, char c)
 {
 	int		i;
 	int		j;
@@ -127,7 +135,7 @@ void	fill_x_buffer(t_conv *cv, int diez, char c)
 	j = -1;
 	tmp = (c == 'x') ? ft_strdup("0x") : ft_strdup("0X");
 	if (cv->mode == 1)
-		fill_modex_d(cv, diez, tmp);
+		fill_modex_d(cv, diez, pre, tmp);
 	if (cv->mode == 2)
 		fill_modex_t(cv, diez, tmp);
 	if (cv->mode == 0)
@@ -224,7 +232,7 @@ int		ft_conv_x(t_env *e, va_list params, char c)
 		if (e->flags->minus == 1)
 			fill_x_minus_buffer(cv, e->flags->diez, c);
 		else
-			fill_x_buffer(cv, e->flags->diez, c);
+			fill_x_buffer(cv, e->flags->diez, e->pre, c);
 	}
 	ft_putstr(cv->buffer_str);
 	len = (int)ft_strlen(cv->buffer_str);

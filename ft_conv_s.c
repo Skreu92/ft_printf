@@ -44,11 +44,14 @@ void	create_s_buffer(t_conv *cv, t_env *e)
 		cv->mode = 2;
 		cv->buffer_str = malloc(sizeof(char) * (e->pre + 1));
 		cv->buffer_str[e->pre] = '\0';
-		ft_memset(cv->buffer_str, '0', e->pre);
+		ft_memset(cv->buffer_str, cv->empty, e->pre);
+		cv->buffer_len = e->buff_len;
 	}
 	else
 	{
 		cv->mode = 0;
+		if (e->pre)
+			len--;
 		cv->buffer_str = malloc(sizeof(char) * (len + 1));
 		cv->buffer_str[len] = '\0';
 		if (len > 0)
@@ -87,21 +90,33 @@ void	fill_s_buffer(t_conv *cv, int pre)
 	if (cv->mode == 1)
 	{
 		j = ft_strlen(cv->buffer_str);
-		j -= (pre > 0) ? pre : (int)ft_strlen(cv->buffer_nb);
+		if (pre > 0)
+			if(pre > (int)ft_strlen(cv->buffer_nb))
+	 			j -= pre - (int)ft_strlen(cv->buffer_nb);
+	 		else
+	 			j -= pre;
+	 	else
+	 		j -= ft_strlen(cv->buffer_nb);
 		i = -1;
 		while (cv->buffer_nb[++i] && cv->buffer_str[j])
 			cv->buffer_str[j++] = cv->buffer_nb[i];
 	}
 	if (cv->mode == 2)
 	{
-		while (cv->buffer_str[++i])
-			cv->buffer_str[i] = cv->buffer_nb[i];
+		i = (cv->buffer_len > 0 && cv->buffer_len > (int)ft_strlen(cv->buffer_nb)) ? cv->buffer_len - (int)ft_strlen(cv->buffer_nb) : 0;
+		while (cv->buffer_str[i] && cv->buffer_nb[j])
+			cv->buffer_str[i++] = cv->buffer_nb[j++];
+		cv->buffer_str[i] = '\0';
 	}
 	if (cv->mode == 0)
 	{
-		j = ft_strlen(cv->buffer_str) - ft_strlen(cv->buffer_nb) - 1;
-		while (cv->buffer_nb[++i] && cv->buffer_str[i])
-			cv->buffer_str[i] = cv->buffer_nb[i];
+		j = ft_strlen(cv->buffer_str);
+		if (pre > 0)
+			j -= pre;
+		else
+			j -= ft_strlen(cv->buffer_nb);
+		while (cv->buffer_nb[++i] && cv->buffer_str[j])
+			cv->buffer_str[j++] = cv->buffer_nb[i];
 	}
 }
 
@@ -125,7 +140,7 @@ int		putws(t_env *e, unsigned int *buff, int len)
 void	put_little_s(t_env *e, t_conv *cv, int *len, int nul)
 {
 	create_s_buffer(cv, e);
-	if (e->flags->minus)
+	if (e->flags->minus == 1)
 		fill_s_minus(cv, e->pre);
 	else
 		fill_s_buffer(cv, e->pre);
@@ -140,11 +155,12 @@ void	put_big_s(t_env *e, t_conv *cv, int *len)
 {
 	if (cv->buffer_wnb == 0 || cv->buffer_wnb == NULL)
 	{
-		cv->buffer_str = ft_strdup("(null)");
+		cv->buffer_nb = ft_strdup("(null)");
+		put_little_s(e, cv, len, 1);
 	}
 	else if (cv->buffer_wnb != NULL)
 	{
-		*len = putws(e, (unsigned int *)cv->buffer_wnb, 0);
+		*len = putws(e, (unsigned int *)cv->buffer_wnb, 1);
 	}
 }
 
@@ -167,7 +183,9 @@ int		ft_conv_s(t_env *e, va_list params, char c)
 		cv->buffer_nb = ft_strdup("(null)");
 		nul++;
 	}
-	if (e->modifiers->l == 0 && c != 'S')
+	if (e->flags->point == 1 && e->pre == 0)
+		cv->buffer_nb = ft_strdup("");
+	if ((e->modifiers->l == 0 && c != 'S'))
 		put_little_s(e, cv, &len, nul);
 	else
 		put_big_s(e, cv, &len);

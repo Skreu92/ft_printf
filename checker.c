@@ -18,9 +18,9 @@ char	*check_djz_modifiers(t_modifiers *m, va_list params, char c)
 
 	if (m->l == 1 || c == 'D')
 		buffer = ft_lltoa(va_arg(params, long));
-	else if (m->j)
+	else if (m->j && c != 'D')
 		buffer = ft_lltoa(va_arg(params, intmax_t));
-	else if (m->z)
+	else if (m->z && c != 'D')
 		buffer = ft_lltoa(va_arg(params, size_t));
 	else
 		buffer = ft_itoa(va_arg(params, int));
@@ -32,16 +32,16 @@ char	*check_d_modifiers(t_modifiers *m, va_list params, char c)
 	char	*buffer;
 	int		tmp;
 
-	if (m->ll)
+	if (m->ll && c != 'D')
 		buffer = ft_lltoa(va_arg(params, long long));
-	else if (m->hh)
+	else if (m->hh && c != 'D')
 	{
 		if (!(tmp = (char)va_arg(params, int)))
 			buffer = ft_strdup("0");
 		else if (ft_strcmp((buffer = ft_itoa(tmp)), "128") == 0)
 			buffer = ft_strdup("-128");
 	}
-	else if (m->h)
+	else if (m->h && c != 'D')
 	{
 		if (!(tmp = (short)va_arg(params, int)))
 			buffer = ft_strdup("0");

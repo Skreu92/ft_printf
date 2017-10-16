@@ -126,7 +126,7 @@ void f_fill_buff(t_conv *cv, int f_plus, int pre, int space);
 void fill_d_minus(t_conv *cv, int f_plus, int pre, int f_space);
 void fill_s_buffer(t_conv *cv, int pre);
 void fill_s_minus(t_conv *cv, int pre);
-void fill_x_buffer(t_conv *cv, int diez, char c);
+void fill_x_buffer(t_conv *cv, int diez, int pre, char c);
 void fill_o_minus(t_conv *cv, t_flags *flags, int pre);
 void fill_o_buffer(t_conv *cv, int f_plus, int pre);
 void create_x_buffer(t_conv *cv, t_env *e);
