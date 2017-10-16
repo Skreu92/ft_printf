@@ -12,30 +12,30 @@
 
 #include "ft_printf.h"
 
-int get_precision(t_env *e, int i, int *len)
+int		get_precision(t_env *e, int i, int *len)
 {
-	char buff[10];
-	int j;
+	char	buff[10];
+	int		j;
 
 	j = -1;
 	ft_memset(buff, ' ', 3);
-	while(ft_isdigit(e->fmt[i]))
+	while (ft_isdigit(e->fmt[i]))
 		buff[++j] = e->fmt[i++];
 	*len = ft_atoi(buff);
-	while(ft_isdigit(e->fmt[i]))
+	while (ft_isdigit(e->fmt[i]))
 		i++;
 	return (i);
 }
 
-int get_buff_len(t_env *e, int i, int *len)
+int		get_buff_len(t_env *e, int i, int *len)
 {
-	char *buffer;
-	int j;
+	char	*buffer;
+	int		j;
 
 	j = -1;
 	buffer = malloc(sizeof(char) * 4);
 	buffer[3] = '\0';
-	while(ft_isdigit(e->fmt[i]))
+	while (ft_isdigit(e->fmt[i]))
 		buffer[++j] = e->fmt[i++];
 	buffer[++j] = '\0';
 	*len = ft_atoi(buffer);
@@ -43,7 +43,7 @@ int get_buff_len(t_env *e, int i, int *len)
 	return (i);
 }
 
-void init_flags_modi(t_flags *flags, t_modifiers *modifiers)
+void	init_flags_modi(t_flags *flags, t_modifiers *modifiers)
 {
 	flags->diez = 0;
 	flags->minus = 0;
@@ -58,6 +58,3 @@ void init_flags_modi(t_flags *flags, t_modifiers *modifiers)
 	modifiers->j = 0;
 	modifiers->z = 0;
 }
-
-
-

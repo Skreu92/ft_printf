@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int	ft_size_bin(unsigned int value)
+int				ft_size_bin(unsigned int value)
 {
 	int i;
 
@@ -25,7 +25,7 @@ int	ft_size_bin(unsigned int value)
 	return (i);
 }
 
-static void	put_2o(unsigned int w)
+static void		put_2o(unsigned int w)
 {
 	unsigned int	mask;
 	unsigned char	res;
@@ -40,7 +40,7 @@ static void	put_2o(unsigned int w)
 	write(1, &res, 1);
 }
 
-static void	put_3o(unsigned int w)
+static void		put_3o(unsigned int w)
 {
 	unsigned int	mask;
 	unsigned char	res;
@@ -58,7 +58,7 @@ static void	put_3o(unsigned int w)
 	write(1, &res, 1);
 }
 
-static void	put_4o(unsigned int w)
+static void		put_4o(unsigned int w)
 {
 	unsigned int	mask;
 	unsigned char	res;
@@ -79,7 +79,7 @@ static void	put_4o(unsigned int w)
 	write(1, &res, 1);
 }
 
-void		ft_putwchar(unsigned int w)
+void			ft_putwchar(unsigned int w)
 {
 	unsigned int	value;
 	int				size;

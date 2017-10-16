@@ -12,53 +12,53 @@
 
 #include "ft_printf.h"
 
-int is_flag(char *str, int i)
+int		is_flag(char *str, int i)
 {
-	if(str[i] == '#')
+	if (str[i] == '#')
 		return (1);
-	if(str[i] == '-')
+	if (str[i] == '-')
 		return (1);
-	if(str[i] == '+')
+	if (str[i] == '+')
 		return (1);
-	if(str[i] == ' ')
+	if (str[i] == ' ')
 		return (1);
-	if(str[i] == '0')
+	if (str[i] == '0')
 		return (1);
 	return (0);
 }
 
-int is_type(char c)
+int		is_type(char c)
 {
-	if(c == 's' || c == 'S')
+	if (c == 's' || c == 'S')
 		return (1);
-	if(c == 'u' || c == 'U')
+	if (c == 'u' || c == 'U')
 		return (1);
-	if(c == 'd' || c == 'D')
+	if (c == 'd' || c == 'D')
 		return (1);
-	if(c == 'x' || c == 'X')
+	if (c == 'x' || c == 'X')
 		return (1);
-	if(c == 'c' || c == 'C')
+	if (c == 'c' || c == 'C')
 		return (1);
-	if(c == 'p'|| c == 'i')
+	if (c == 'p' || c == 'i')
 		return (1);
-	if(c == 'o' || c == 'O')
+	if (c == 'o' || c == 'O')
 		return (1);
 	return (0);
 }
 
-int is_modifier(char *str, int i)
+int		is_modifier(char *str, int i)
 {
-	if(str[i] == 'h' && str[i + 1] != 'h')
+	if (str[i] == 'h' && str[i + 1] != 'h')
 		return (1);
-	if(str[i] == 'l' && str[i + 1] != 'l')
+	if (str[i] == 'l' && str[i + 1] != 'l')
 		return (1);
 	if (str[i] == 'l' && str[i + 1] == 'l')
 		return (1);
 	if (str[i] == 'h' && str[i + 1] == 'h')
 		return (1);
-	if(str[i] == 'j')
+	if (str[i] == 'j')
 		return (1);
-	if(str[i] == 'z')
+	if (str[i] == 'z')
 		return (1);
 	return (0);
 }

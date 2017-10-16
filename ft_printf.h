@@ -128,7 +128,7 @@ void fill_s_buffer(t_conv *cv, int pre);
 void fill_s_minus(t_conv *cv, int pre);
 void fill_x_buffer(t_conv *cv, int diez, char c);
 void fill_o_minus(t_conv *cv, t_flags *flags, int pre);
-void fill_o_buffer(t_conv *cv, int f_plus, int pre, int f_space);
+void fill_o_buffer(t_conv *cv, int f_plus, int pre);
 void create_x_buffer(t_conv *cv, t_env *e);
 char		*ft_strjoin_free(char **s1, char **s2, int bool_s1, int bool_s2);
 
