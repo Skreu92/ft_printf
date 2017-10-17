@@ -23,7 +23,7 @@ int main()
 	int i= 1;
 	char *l = setlocale(LC_ALL,"en_US.UTF-8");
 
-	printf("len%d\n", ft_printf("{%S}", NULL));
-	printf("len%d\n",printf("{%S}", NULL));
+	printf("len%d\n", ft_printf("{%-30S}", L"我是一只猫。"));
+	printf("len%d\n",printf("{%-30S}", L"我是一只猫。"));
 	return (0);
 }

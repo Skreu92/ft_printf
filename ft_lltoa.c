@@ -269,3 +269,23 @@ char	*ft_strjoin_free(char **s1, char **s2, int bool_s1, int bool_s2)
 		ft_memdel((void **)s2);
 	return (str);
 }
+
+
+int		ft_atoi_bit_rev(const char *str)
+{
+	int		result;
+	int		i;
+	int		p;
+
+	i = 0;
+	p = 1;
+	result = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '1')
+			result = result + p;
+		i++;
+		p = p * 2;
+	}
+	return (result);
+}

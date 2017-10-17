@@ -12,19 +12,28 @@
 
 #include "ft_printf.h"
 
-void	fill_modep_d(t_conv *cv, char *tmp)
+void	fill_modep_d(t_conv *cv, char *tmp, int f_zero)
 {
 	int j;
 	int i;
 
 	i = -1;
-	cv->buffer_nb = ft_strjoin(tmp, cv->buffer_nb);
 	j = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb);
+	if(j > 1 && f_zero)
+	{
+		cv->buffer_str[0] = tmp[0];
+		cv->buffer_str[1] = tmp[1];
+	}
+	else if (j > 1 && !f_zero)
+	{
+		cv->buffer_str[j - 2] = tmp[0];
+		cv->buffer_str[j - 1] = tmp[1];
+	}
 	while (cv->buffer_nb[++i])
 		cv->buffer_str[j++] = cv->buffer_nb[i];
 }
 
-void	fill_p_buffer(t_conv *cv)
+void	fill_p_buffer(t_conv *cv, int f_zero)
 {
 	int		i;
 	int		j;
@@ -35,7 +44,7 @@ void	fill_p_buffer(t_conv *cv)
 	j = (int)ft_strlen(cv->buffer_str) - (int)ft_strlen(cv->buffer_nb);
 	tmp = ft_strdup("0x");
 	if (cv->mode == 1)
-		fill_modep_d(cv, tmp);
+		fill_modep_d(cv, tmp , f_zero);
 	if (cv->mode == 2)
 	{
 		while (cv->buffer_nb[++i])
@@ -108,7 +117,7 @@ int		ft_conv_p(t_env *e, va_list params)
 	if (e->flags->minus == 1)
 		fill_p_minus_buffer(cv);
 	else
-		fill_p_buffer(cv);
+		fill_p_buffer(cv, e->flags->zero);
 	ft_putstr(cv->buffer_str);
 	len = ft_strlen(cv->buffer_str);
 	free(cv->buffer_str);

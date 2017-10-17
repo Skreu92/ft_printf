@@ -12,21 +12,6 @@
 
 #include "ft_printf.h"
 
-int		ft_wlen(unsigned int w)
-{
-	int i;
-	int sb;
-
-	i = 1;
-	sb = ft_size_bin(w);
-	while (sb - 8 >= 0)
-	{
-		sb -= 8;
-		i++;
-	}
-	return (i);
-}
-
 void	create_s_buffer(t_conv *cv, t_env *e)
 {
 	int len;
@@ -120,23 +105,6 @@ void	fill_s_buffer(t_conv *cv, int pre)
 	}
 }
 
-int		putws(t_env *e, unsigned int *buff, int len)
-{
-	if (MB_CUR_MAX > 1)
-	{
-		e->pre = (e->pre == 0) ? 320 : e->pre;
-		while (*buff && len < e->pre)
-		{
-			ft_putwchar(*buff);
-			len += ft_wlen(*buff);
-			buff++;
-		}
-	}
-	else
-		return (0);
-	return (len);
-}
-
 void	put_little_s(t_env *e, t_conv *cv, int *len, int nul)
 {
 	create_s_buffer(cv, e);
@@ -151,16 +119,84 @@ void	put_little_s(t_env *e, t_conv *cv, int *len, int nul)
 	free(cv->buffer_str);
 }
 
+static int		get_len(wchar_t *str)
+{
+	int i;
+	int len;
+
+	i = 0;
+	len = 0;
+	while (str[i])
+	{
+		if (str[i] > 0 && str[i] <= 128)
+			len += 1;
+		else if (str[i] > 0 && str[i] <= 2048)
+			len += 2;
+		else if (str[i] > 0 && str[i] <= 65536)
+			len += 3;
+		else if (str[i] > 0 && str[i] <= INT_MAX)
+			len += 4;
+		else
+			break ;
+		i++;
+	}
+	return (len);
+}
+
 void	put_big_s(t_env *e, t_conv *cv, int *len)
 {
-	if (cv->buffer_wnb == 0 || cv->buffer_wnb == NULL)
+	int i;
+	int j;
+
+	i = 0;
+	cv->buffer_str = ft_strdup("    ");
+	if(e->flags->zero && e->flags->point)
+	{
+		create_s_buffer(cv, e);
+		ft_putstr(cv->buffer_str);
+		(*len) = ft_strlen(cv->buffer_str);
+	}
+	else if (cv->buffer_wnb == 0 || cv->buffer_wnb == NULL)
 	{
 		cv->buffer_nb = ft_strdup("(null)");
-		put_little_s(e, cv, len, 1);
+		ft_putstr(cv->buffer_nb);
+		*len = ft_strlen(cv->buffer_nb);
 	}
 	else if (cv->buffer_wnb != NULL)
 	{
-		*len = putws(e, (unsigned int *)cv->buffer_wnb, 1);
+		*len = get_len(cv->buffer_wnb);
+		if (e->pre > e->buff_len)
+			*len = e->pre - 1;
+		if (e->buff_len > e->pre && e->pre)
+			(*len) = e->pre;
+		if(e->flags->minus == 1)
+		{
+			j = 0;
+			while ((*len) > 0 && j < (*len) && cv->buffer_wnb[j] != 0)
+			{
+				i += ft_putwchar(cv->buffer_wnb[j], cv->buffer_str);
+				j++;
+			}
+			while((i++) < e->buff_len)
+				write(1, &cv->empty, 1);
+			(*len) = i - 1;
+		}
+		else
+		{
+			while(i < (e->buff_len - (*len)))
+			{
+				write(1, &cv->empty, 1);
+				i++;
+			}
+			e->buff_len = i;
+			i = 0;
+			while ((*len) > 0 && i < (*len) && cv->buffer_wnb[i] != 0)
+			{
+				ft_putwchar(cv->buffer_wnb[i], cv->buffer_str);
+				i++;
+			}
+			(*len) += e->buff_len;
+		}
 	}
 }
 

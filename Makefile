@@ -36,12 +36,15 @@ SRC= ft_printf.c\
 		libft/ft_memset.c\
 		libft/ft_putstr.c\
 		libft/ft_strcpy.c\
+		libft/ft_strncpy.c\
 		libft/ft_strdup.c\
 		libft/ft_strjoin.c\
 		libft/ft_strnew.c\
 		libft/ft_strcmp.c\
 		libft/ft_memdel.c\
 		libft/ft_memalloc.c\
+		libft/ft_strrev.c\
+		libft/ft_strsub.c\
 
 
 NAME = libftprintf.a

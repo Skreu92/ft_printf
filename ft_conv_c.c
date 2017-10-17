@@ -12,34 +12,6 @@
 
 #include "ft_printf.h"
 
-char	*wchar_handler_ext(wchar_t chr)
-{
-	char *str;
-
-	str = ft_memset(ft_strnew(4), '\0', 4);
-	if (chr <= 0x7F)
-		str[0] = chr;
-	else if (chr <= 0x7FF)
-	{
-		str[0] = ((chr >> 6) + 0xC0);
-		str[1] = ((chr & 0x3F) + 0x80);
-	}
-	else if (chr <= 0xFFFF)
-	{
-		str[0] = ((chr >> 12) + 0xE0);
-		str[1] = (((chr >> 6) & 0x3F) + 0x80);
-		str[2] = ((chr & 0x3F) + 0x80);
-	}
-	else if (chr <= 0x10FFFF)
-	{
-		str[0] = ((chr >> 18) + 0xF0);
-		str[1] = (((chr >> 12) & 0x3F) + 0x80);
-		str[2] = (((chr >> 6) & 0x3F) + 0x80);
-		str[3] = ((chr & 0x3F) + 0x80);
-	}
-	return (str);
-}
-
 void	create_c_buffer(t_conv *cv, t_env *e, int len)
 {
 	cv->mode = 0;
@@ -86,13 +58,18 @@ void	fill_c_buffer(t_env *e, t_conv *cv, int nb)
 	}
 }
 
-void	print_char(char *str, int len)
+int print_wchar(va_list params)
 {
-	int i;
+	wchar_t buffer;
+	int len;
+	char *buff;
+	char *bu;
 
-	i = -1;
-	while (++i < len)
-		write(1, &str[i], 1);
+	len = 0;
+	buff = NULL;
+	bu = NULL;
+	buffer = va_arg(params, wchar_t);
+	return (len);
 }
 
 int		go_to_simple_c(va_list params, t_conv *cv, t_env *e)
@@ -120,10 +97,9 @@ int		go_to_complicate_c(va_list params, t_conv *cv, t_env *e)
 		len++;
 		cv->buffer_str = NULL;
 	}
-	else
-		len = ft_wlen(arg);
 	create_c_buffer(cv, e, len);
 	fill_c_buffer(e, cv, arg);
+	len = (len > 1) ? (int)ft_strlen(cv->buffer_str) : (int)ft_strlen(cv->buffer_str) - len;
 	return (len);
 }
 
@@ -138,6 +114,7 @@ int		ft_conv_c(t_env *e, va_list params, char c)
 {
 	t_conv			*cv;
 	int				len;
+	wchar_t			tmp;
 
 	len = 0;
 	cv = malloc(sizeof(t_conv));
@@ -146,10 +123,24 @@ int		ft_conv_c(t_env *e, va_list params, char c)
 	{
 		if (go_to_simple_c(params, cv, e))
 			return (1);
+		len += ft_strlen(cv->buffer_str);
 	}
 	else
-		len = go_to_complicate_c(params, cv, e);
-	len += ft_strlen(cv->buffer_str);
+	{
+		cv->buffer_str = malloc(4);
+		if((tmp = va_arg(params, wchar_t)) == 0)
+		{
+			if(e->modifiers->hh == 0 && e->flags->space == 0)
+			{
+				return (1);
+			}
+			else	
+			{
+				return (ft_putwchar(tmp, cv->buffer_str));
+			}
+		}
+		len = ft_putwchar(tmp, cv->buffer_str);
+	}
 	free(cv->buffer_str);
 	free(cv);
 	return (len);

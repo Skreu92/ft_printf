@@ -21,7 +21,7 @@
 # include <stdio.h>
 # include <wchar.h>
 # include <stdlib.h>
-
+# include <limits.h>
 typedef struct s_flags
 {
 	int diez;
@@ -133,7 +133,7 @@ void create_x_buffer(t_conv *cv, t_env *e);
 char		*ft_strjoin_free(char **s1, char **s2, int bool_s1, int bool_s2);
 
 char	*wchar_handler_ext(wchar_t chr);
-void		ft_putwchar(unsigned int w);
+int		ft_putwchar(wchar_t w, char *n);
 int	ft_size_bin(unsigned int value);
 int			ft_wlen(unsigned int w);
 char	*ft_mask1(wchar_t n);
